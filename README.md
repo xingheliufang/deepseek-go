@@ -46,7 +46,7 @@ import (
 
 func main() {
 	// Set up the Deepseek client
-	client := deepseek.NewClient("your deepseek api key")
+    client := deepseek.NewClient(os.Getenv("DEEPSEEK_API"))
 
 	// Create a chat completion request
 	request := &deepseek.ChatCompletionRequest{
