@@ -50,7 +50,7 @@ func main() {
 
 	// Create a chat completion request
 	request := &deepseek.ChatCompletionRequest{
-		Model: deepseek.DeepSeekCoder,
+		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
 			{Role: deepseek.ChatMessageRoleSystem, Content: "Answer every question using slang."},
 			{Role: deepseek.ChatMessageRoleUser, Content: "Which is the tallest mountain in the world?"},
