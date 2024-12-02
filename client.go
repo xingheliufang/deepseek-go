@@ -35,21 +35,29 @@ func (c *Client) CreateChatCompletion(
 		SetPath("/chat/completions").
 		SetBodyFromStruct(request).
 		Build(ctx)
+
 	if err != nil {
 		return nil, fmt.Errorf("error building request: %w", err)
 	}
+
 	resp, err := utils.SendRequest(req)
+
 	if err != nil {
 		return nil, fmt.Errorf("error sending request: %w", err)
 	}
+
 	defer resp.Body.Close()
+
 	if resp.StatusCode >= 400 {
-		return nil, fmt.Errorf("received non-2xx status code: %d", resp.StatusCode)
+		return nil, HandleAPIError(resp)
 	}
+
 	updatedResp, err := utils.HandleResponse(resp)
+
 	if err != nil {
 		return nil, fmt.Errorf("error decoding response: %w", err)
 	}
+
 	return updatedResp, err
 }
 
@@ -63,13 +71,19 @@ func (c *Client) CreateChatCompletionStream(
 		SetPath("chat/completions/").
 		SetBodyFromStruct(request).
 		Build(ctx)
+
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building request: %w", err)
 	}
 
 	resp, err := utils.SendRequest(req)
 	if err != nil {
 		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		return nil, HandleAPIError(resp)
 	}
 
 	ctx, cancel := context.WithCancel(ctx)
