@@ -1,6 +1,7 @@
 package deepseek
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 
@@ -50,4 +51,33 @@ func (c *Client) CreateChatCompletion(
 		return nil, fmt.Errorf("error decoding response: %w", err)
 	}
 	return updatedResp, err
+}
+
+// CreateStreamChatCompletion send a chat completion request with stream = true and returns the delta
+func (c *Client) CreateChatCompletionStream(
+	ctx context.Context,
+	request *StreamChatCompletionRequest,
+) (ChatCompletionStream, error) {
+	req, err := utils.NewRequestBuilder(c.authToken).
+		SetBaseURL(c.baseURL).
+		SetPath("chat/completions/").
+		SetBodyFromStruct(request).
+		Build(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := utils.SendRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	ctx, cancel := context.WithCancel(ctx)
+	stream := &chatCompletionStream{
+		ctx:    ctx,
+		cancel: cancel,
+		resp:   resp,
+		reader: bufio.NewReader(resp.Body),
+	}
+	return stream, nil
 }
