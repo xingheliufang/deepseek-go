@@ -38,7 +38,7 @@ func (rb *RequestBuilder) SetPath(path string) *RequestBuilder {
 func (rb *RequestBuilder) SetBodyFromStruct(data interface{}) *RequestBuilder {
 	body, err := json.Marshal(data)
 	if err != nil {
-		panic(fmt.Sprintf("failed to marshal body: %v", err)) // Use panic for debugging; replace with proper error handling.
+		panic(fmt.Sprintf("failed to marshal body: %v", err)) // Using panic for debugging; replace in future with proper error handling.
 	}
 	rb.body = body
 	return rb
