@@ -2,13 +2,13 @@
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Deepseek-Go is a Go-based API wrapper for the [Deepseek AI](https://deepseek.ai) platform. It provides a clean and type-safe interface to interact with Deepseek's AI features, including chat completions, token usage tracking, and more.
+Deepseek-Go is a Go-based API wrapper for the [Deepseek](https://deepseek.com) platform. It provides a clean and type-safe interface to interact with Deepseek's AI features, including chat completions with streaming, token usage tracking, and more.
 
 This library is designed for developers building Go applications that require seamless integration with Deepseek AI.
 
 ## Features
 
-- **Chat Completion**: Easily send chat messages and receive responses from Deepseek's AI models.
+- **Chat Completion**: Easily send chat messages and receive responses from Deepseek's AI models. It also supports streaming.
 - **Modular Design**: The library is structured into reusable components for building, sending, and handling requests and responses.
 - **MIT License**: Open-source and free for both personal and commercial use.
 
