@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"testing"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
 )
 
-func TestMain(t *testing.T) {
+func Chat() {
 	client := deepseek.NewClient(os.Getenv("DEEPSEEK_API"))
 	request := &deepseek.ChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,

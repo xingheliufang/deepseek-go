@@ -7,12 +7,11 @@ import (
 	"io"
 	"log"
 	"os"
-	"testing"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
 )
 
-func TestStream(t *testing.T) {
+func Streaming() {
 	client := deepseek.NewClient(os.Getenv("DEEPSEEK_KEY"))
 	request := &deepseek.StreamChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
