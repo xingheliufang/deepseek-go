@@ -35,6 +35,8 @@ func (rb *RequestBuilder) SetPath(path string) *RequestBuilder {
 }
 
 // SetBodyFromStruct sets the request body from a struct, marshaling it to JSON.
+
+// transform interface to ChatCompletionRequest
 func (rb *RequestBuilder) SetBodyFromStruct(data interface{}) *RequestBuilder {
 	body, err := json.Marshal(data)
 	if err != nil {

@@ -56,6 +56,5 @@ func HandleResponse(resp *http.Response) (*ChatCompletionResponse, error) {
 	if err := json.Unmarshal(body, &parsedResponse); err != nil {
 		return nil, fmt.Errorf("failed to parse response JSON: %w", err)
 	}
-
 	return &parsedResponse, nil
 }
