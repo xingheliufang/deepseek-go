@@ -12,7 +12,7 @@ import (
 
 type StreamChatCompletionMessage struct {
 	Role    string `json:"role"`
-	Content string `json:"content,omitempty"`
+	Content string `json:"content"`
 }
 
 type StreamChatCompletionRequest struct {
@@ -61,8 +61,7 @@ type StreamChatCompletionResponse struct {
 }
 
 func (s *chatCompletionStream) Recv() (*StreamChatCompletionResponse, error) {
-	reader := bufio.NewReader(s.reader)
-
+	reader := s.reader
 	for {
 		line, err := reader.ReadString('\n') // Read until newline
 		if err != nil {
