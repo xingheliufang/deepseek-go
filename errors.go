@@ -6,18 +6,15 @@ import (
 	"net/http"
 )
 
-// ErrorResponse represents the error response from the API.
 type ErrorResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 }
 
-// Error implements the error interface.
 func (e ErrorResponse) Error() string {
 	return fmt.Sprintf("API error: %d - %s", e.Code, e.Message)
 }
 
-// APIError represents a generic API error.
 type APIError struct {
 	StatusCode int
 	ErrorMsg   string
@@ -28,31 +25,21 @@ func (a APIError) Error() string {
 	return fmt.Sprintf("API error %d: %s", a.StatusCode, a.ErrorMsg)
 }
 
-// UnauthorizedError represents a 401 Unauthorized error.
-type UnauthorizedError struct {
-	APIError
-}
-
-// NotFoundError represents a 404 Not Found error.
-type NotFoundError struct {
-	APIError
-}
-
-// ServerErrorCode represents internal server errors.
-type ServerErrorCode struct {
-	APIError
-}
-
+// Tries to handel errors listed on: https://api-docs.deepseek.com/quick_start/error_codes
 func HandleAPIError(resp *http.Response) error {
 	var apiErr ErrorResponse
 	if err := json.NewDecoder(resp.Body).Decode(&apiErr); err != nil {
 		switch resp.StatusCode {
 		case http.StatusUnauthorized:
-			return UnauthorizedError{APIError{StatusCode: resp.StatusCode, ErrorMsg: "401 Error are a result of unauthorized acess. Please make sure your API key is correct."}}
+			return APIError{StatusCode: resp.StatusCode, ErrorMsg: "401 Error are a result of unauthorized acess. Please make sure your API key is correct."}
+		case http.StatusPaymentRequired:
+			return APIError{StatusCode: resp.StatusCode, ErrorMsg: "You have run out of balance. Please check your account's balance, and go to the Top up page to add funds. https://platform.deepseek.com/top_up"}
+		case http.StatusTooManyRequests:
+			return APIError{StatusCode: resp.StatusCode, ErrorMsg: "You are sending requests too quickly."}
 		case http.StatusNotFound:
-			return NotFoundError{APIError{StatusCode: resp.StatusCode, ErrorMsg: apiErr.Message}}
+			return APIError{StatusCode: resp.StatusCode, ErrorMsg: apiErr.Message}
 		case http.StatusInternalServerError:
-			return ServerErrorCode{APIError{StatusCode: resp.StatusCode, ErrorMsg: apiErr.Message}}
+			return APIError{StatusCode: resp.StatusCode, ErrorMsg: apiErr.Message}
 		default:
 			return APIError{StatusCode: resp.StatusCode, ErrorMsg: ("Failed to decode error respons " + apiErr.Message)}
 		}
