@@ -32,7 +32,7 @@ func (c *Client) CreateChatCompletion(
 
 	req, err := utils.NewRequestBuilder(c.authToken).
 		SetBaseURL(c.baseURL).
-		SetPath("/chat/completions").
+		SetPath("chat/completions").
 		SetBodyFromStruct(request).
 		Build(ctx)
 
@@ -66,6 +66,7 @@ func (c *Client) CreateChatCompletionStream(
 	ctx context.Context,
 	request *StreamChatCompletionRequest,
 ) (ChatCompletionStream, error) {
+
 	req, err := utils.NewRequestBuilder(c.authToken).
 		SetBaseURL(c.baseURL).
 		SetPath("chat/completions/").
