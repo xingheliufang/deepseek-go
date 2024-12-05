@@ -77,6 +77,26 @@ Save this code to a file (e.g., `main.go`), and run it:
 ```sh
 go run main.go
 ```
+</details>
+
+<details >
+	<summary> Sedning other params like Temp, Stop </summary>
+	<strong> You just need to extend the ChatCompletionMessage with the supported parameters. </strong>
+
+```go
+	request := &deepseek.ChatCompletionRequest{
+		Model: deepseek.DeepSeekChat,
+		Messages: []deepseek.ChatCompletionMessage{
+			{Role: deepseek.ChatMessageRoleUser, Content: "What is the meaning of deepseek"},
+			{Role: deepseek.ChatMessageRoleSystem, Content: "Answer every question using slang"},
+		},
+		Temperature: 1.0,
+		Stop:        []string{"yo", "hello"},
+		ResponseFormat: &deepseek.ResponseFormat{
+			Type: "text",
+		},
+	}
+```
 
 </details>
 
