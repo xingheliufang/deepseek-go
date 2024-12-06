@@ -67,6 +67,7 @@ func (c *Client) CreateChatCompletionStream(
 	request *StreamChatCompletionRequest,
 ) (ChatCompletionStream, error) {
 
+	request.Stream = true
 	req, err := utils.NewRequestBuilder(c.authToken).
 		SetBaseURL(c.baseURL).
 		SetPath("chat/completions/").
