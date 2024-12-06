@@ -43,7 +43,7 @@ type Tools struct {
 }
 
 type ResponseFormat struct {
-	Type string `json:"type"`
+	Type string `json:"type"` //either text or json_object. If json_object, please mention "json" anywhere in your prompt.
 }
 
 // make a different struct for streaming with streaming options parameter
