@@ -46,7 +46,7 @@ import (
 	"os"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
-	"github.com/cohesion-org/deepseek-go/constants"
+	constants "github.com/cohesion-org/deepseek-go/constants"
 )
 
 func main() {
@@ -88,8 +88,8 @@ go run main.go
 	request := &deepseek.ChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: deepseek.ChatMessageRoleUser, Content: "What is the meaning of deepseek"},
-			{Role: deepseek.ChatMessageRoleSystem, Content: "Answer every question using slang"},
+			{Role: constants.ChatMessageRoleUser, Content: "What is the meaning of deepseek"},
+			{Role: constants.ChatMessageRoleSystem, Content: "Answer every question using slang"},
 		},
 		Temperature: 1.0,
 		Stop:        []string{"yo", "hello"},
@@ -116,6 +116,7 @@ import (
 	"os"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
+	constants "github.com/cohesion-org/deepseek-go/constants"
 )
 
 func main() {
@@ -123,7 +124,7 @@ func main() {
 	request := &deepseek.StreamChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: deepseek.ChatMessageRoleUser, Content: "Just testing if the streaming feature is working or not!"},
+			{Role: constants.ChatMessageRoleUser, Content: "Just testing if the streaming feature is working or not!"},
 		},
 		Stream: true,
 	}
@@ -195,16 +196,6 @@ func main() {
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-## TODO
-
-- [X] Make streaming possible. 
-- [ ] Add examples for token usage tracking.
-- [ ] Improve error handling in the wrapper.
-- [ ] Add support for other Deepseek endpoints.
-- [ ] Write comprehensive tests.
 
 ---
 
