@@ -9,6 +9,7 @@ import (
 	"os"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
+	"github.com/cohesion-org/deepseek-go/constants"
 )
 
 func Streaming() {
@@ -16,7 +17,7 @@ func Streaming() {
 	request := &deepseek.StreamChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: deepseek.ChatMessageRoleUser, Content: "Just testing if the streaming feature is working or not!"},
+			{Role: constants.ChatMessageRoleUser, Content: "Just testing if the streaming feature is working or not!"},
 		},
 		Stream: true,
 	}

@@ -1,4 +1,4 @@
-package Utils
+package handlers
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func SendRequest(req *http.Request) (*http.Response, error) {
+func HandleSendChatCompletionRequest(req *http.Request) (*http.Response, error) {
 	client := &http.Client{
 		Timeout: 120 * time.Second,
 	}
