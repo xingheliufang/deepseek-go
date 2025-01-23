@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cohesion-org/deepseek-go/handlers"
 	utils "github.com/cohesion-org/deepseek-go/utils"
 )
 
@@ -25,12 +26,12 @@ func NewClient(authToken string) *Client {
 func (c *Client) CreateChatCompletion(
 	ctx context.Context,
 	request *ChatCompletionRequest,
-) (*utils.ChatCompletionResponse, error) {
+) (*handlers.ChatCompletionResponse, error) {
 	if request == nil {
 		return nil, fmt.Errorf("request cannot be nil")
 	}
 
-	req, err := utils.NewRequestBuilder(c.authToken).
+	req, err := handlers.NewRequestBuilder(c.authToken).
 		SetBaseURL(c.baseURL).
 		SetPath("chat/completions").
 		SetBodyFromStruct(request).
@@ -40,7 +41,7 @@ func (c *Client) CreateChatCompletion(
 		return nil, fmt.Errorf("error building request: %w", err)
 	}
 
-	resp, err := utils.SendRequest(req)
+	resp, err := handlers.HandleSendChatCompletionRequest(req)
 
 	if err != nil {
 		return nil, fmt.Errorf("error sending request: %w", err)
@@ -52,7 +53,7 @@ func (c *Client) CreateChatCompletion(
 		return nil, HandleAPIError(resp)
 	}
 
-	updatedResp, err := utils.HandleResponse(resp)
+	updatedResp, err := handlers.HandleChatCompletionResponse(resp)
 
 	if err != nil {
 		return nil, fmt.Errorf("error decoding response: %w", err)
@@ -68,7 +69,7 @@ func (c *Client) CreateChatCompletionStream(
 ) (ChatCompletionStream, error) {
 
 	request.Stream = true
-	req, err := utils.NewRequestBuilder(c.authToken).
+	req, err := handlers.NewRequestBuilder(c.authToken).
 		SetBaseURL(c.baseURL).
 		SetPath("chat/completions/").
 		SetBodyFromStruct(request).
@@ -78,7 +79,7 @@ func (c *Client) CreateChatCompletionStream(
 		return nil, fmt.Errorf("error building request: %w", err)
 	}
 
-	resp, err := utils.SendRequest(req)
+	resp, err := handlers.HandleSendChatCompletionRequest(req)
 	if err != nil {
 		return nil, err
 	}
