@@ -5,7 +5,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cohesion-org/deepseek-go/handlers"
+	handlers "github.com/cohesion-org/deepseek-go/handlers"
 	utils "github.com/cohesion-org/deepseek-go/utils"
 )
 
@@ -31,7 +31,7 @@ func (c *Client) CreateChatCompletion(
 		return nil, fmt.Errorf("request cannot be nil")
 	}
 
-	req, err := handlers.NewRequestBuilder(c.authToken).
+	req, err := utils.NewRequestBuilder(c.authToken).
 		SetBaseURL(c.baseURL).
 		SetPath("chat/completions").
 		SetBodyFromStruct(request).
@@ -69,7 +69,7 @@ func (c *Client) CreateChatCompletionStream(
 ) (ChatCompletionStream, error) {
 
 	request.Stream = true
-	req, err := handlers.NewRequestBuilder(c.authToken).
+	req, err := utils.NewRequestBuilder(c.authToken).
 		SetBaseURL(c.baseURL).
 		SetPath("chat/completions/").
 		SetBodyFromStruct(request).
