@@ -20,12 +20,12 @@ type APIError struct {
 	ErrorMsg   string
 }
 
-// Error implements the error interface.
+// @implements APIError
 func (a APIError) Error() string {
 	return fmt.Sprintf("API error %d: %s", a.StatusCode, a.ErrorMsg)
 }
 
-// Tries to handel errors listed on: https://api-docs.deepseek.com/quick_start/error_codes
+// Tries to handle errors listed on: https://api-docs.deepseek.com/quick_start/error_codes
 func HandleAPIError(resp *http.Response) error {
 	var apiErr ErrorResponse
 	if err := json.NewDecoder(resp.Body).Decode(&apiErr); err != nil {
