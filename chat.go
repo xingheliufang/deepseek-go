@@ -4,12 +4,6 @@ import (
 	"errors"
 )
 
-const (
-	ChatMessageRoleSystem    = "system"
-	ChatMessageRoleUser      = "user"
-	ChatMessageRoleAssistant = "assistant"
-)
-
 var (
 	ErrChatCompletionStreamNotSupported = errors.New("streaming is not supported with this method")
 	ErrUnexpectedResponseFormat         = errors.New("unexpected response format")
