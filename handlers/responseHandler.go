@@ -43,7 +43,7 @@ type Usage struct {
 	PromptCacheMissTokens int `json:"prompt_cache_miss_tokens"`
 }
 
-func HandleResponse(resp *http.Response) (*ChatCompletionResponse, error) {
+func HandleChatCompletionResponse(resp *http.Response) (*ChatCompletionResponse, error) {
 	body, err := io.ReadAll(resp.Body) //never re read your body, do it only once. io clears when reading
 
 	if err != nil {

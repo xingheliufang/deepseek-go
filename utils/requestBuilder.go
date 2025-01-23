@@ -8,28 +8,36 @@ import (
 	"net/http"
 )
 
-type RequestBuilder struct {
+// Builder pattern
+type AuthedRequest struct {
 	authToken string
 	baseURL   string
 	path      string
 	body      []byte
 }
 
+type AuthedRequestBuilder interface {
+	SetBaseURL(string) *AuthedRequest
+	SetPath(string) *AuthedRequest
+	SetBodyFromStruct(interface{}) *AuthedRequest
+	Build(context.Context) (*http.Request, error)
+}
+
 // NewRequestBuilder initializes a new RequestBuilder.
-func NewRequestBuilder(authToken string) *RequestBuilder {
-	return &RequestBuilder{
+func NewRequestBuilder(authToken string) *AuthedRequest {
+	return &AuthedRequest{
 		authToken: authToken,
 	}
 }
 
 // SetBaseURL sets the base URL for the request.
-func (rb *RequestBuilder) SetBaseURL(baseURL string) *RequestBuilder {
+func (rb *AuthedRequest) SetBaseURL(baseURL string) *AuthedRequest {
 	rb.baseURL = baseURL
 	return rb
 }
 
 // SetPath sets the path for the request.
-func (rb *RequestBuilder) SetPath(path string) *RequestBuilder {
+func (rb *AuthedRequest) SetPath(path string) *AuthedRequest {
 	rb.path = path
 	return rb
 }
@@ -37,7 +45,7 @@ func (rb *RequestBuilder) SetPath(path string) *RequestBuilder {
 // SetBodyFromStruct sets the request body from a struct, marshaling it to JSON.
 
 // transform interface to ChatCompletionRequest
-func (rb *RequestBuilder) SetBodyFromStruct(data interface{}) *RequestBuilder {
+func (rb *AuthedRequest) SetBodyFromStruct(data interface{}) *AuthedRequest {
 	body, err := json.Marshal(data)
 	if err != nil {
 		panic(fmt.Sprintf("failed to marshal body: %v", err)) // Using panic for debugging; replace in future with proper error handling.
@@ -47,7 +55,7 @@ func (rb *RequestBuilder) SetBodyFromStruct(data interface{}) *RequestBuilder {
 }
 
 // Build constructs the HTTP request.
-func (rb *RequestBuilder) Build(ctx context.Context) (*http.Request, error) {
+func (rb *AuthedRequest) Build(ctx context.Context) (*http.Request, error) {
 	if rb.baseURL == "" || rb.path == "" {
 		return nil, fmt.Errorf("baseURL or path not set")
 	}
