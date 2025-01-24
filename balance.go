@@ -33,7 +33,7 @@ func GetBalance(client *Client, ctx context.Context) (*BalanceResponse, error) {
 		return nil, err
 	}
 	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Authorization", "Bearer "+client.authToken)
+	req.Header.Add("Authorization", "Bearer "+client.AuthToken)
 
 	res, err := hclient.Do(req)
 	if err != nil {
