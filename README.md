@@ -34,7 +34,7 @@ Before using the library, ensure you have:
 ### Supported Models
 
 - **deepseek-chat**  
-  A versatile model designed for conversational tasks. <br>
+  A versatile model designed for conversational tasks. <br/>
   Usage: `Model: deepseek.DeepSeekChat`
 
 - **deepseek-reasoner**  
