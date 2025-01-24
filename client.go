@@ -40,7 +40,6 @@ func (c *Client) CreateChatCompletion(
 	if err != nil {
 		return nil, fmt.Errorf("error building request: %w", err)
 	}
-
 	resp, err := handlers.HandleSendChatCompletionRequest(req)
 
 	if err != nil {

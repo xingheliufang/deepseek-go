@@ -45,7 +45,6 @@ type Usage struct {
 
 func HandleChatCompletionResponse(resp *http.Response) (*ChatCompletionResponse, error) {
 	body, err := io.ReadAll(resp.Body) //never re read your body, do it only once. io clears when reading
-
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response body: %w", err)
 	}

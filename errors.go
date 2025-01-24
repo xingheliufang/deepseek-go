@@ -41,7 +41,7 @@ func HandleAPIError(resp *http.Response) error {
 		case http.StatusInternalServerError:
 			return APIError{StatusCode: resp.StatusCode, ErrorMsg: apiErr.Message}
 		default:
-			return APIError{StatusCode: resp.StatusCode, ErrorMsg: ("Failed to decode error respons " + apiErr.Message)}
+			return APIError{StatusCode: resp.StatusCode, ErrorMsg: ("Failed to decode error response " + apiErr.Message)}
 		}
 	}
 	return APIError{StatusCode: resp.StatusCode, ErrorMsg: "Failed to decode error response"}
