@@ -4,5 +4,5 @@ package deepseek
 const (
 	DeepSeekChat     = "deepseek-chat"
 	DeepSeekCoder    = "deepseek-coder"
-	DeepseekReasoner = "deepseek-reasoner"
+	DeepSeekReasoner = "deepseek-reasoner"
 )

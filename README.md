@@ -35,10 +35,12 @@ Before using the library, ensure you have:
 
 - **deepseek-chat**  
   A versatile model designed for conversational tasks.
+  Usage: `Model: deepseek.DeepSeekChat`
 
 - **deepseek-reasoner**  
   A specialized model for reasoning-based tasks.  
-  **Note:** The Reasoner model currently does not support level system/assistant messages. You will recieve a 400 error if you try to. 
+  Usage: `Model: deepseek.DeepSeekReasoner`. <br/>
+  **Note:** The Reasoner model currently does not support level system/assistant messages. You will recieve a 400 error if you try to. We don't know why.
 
 <details open>
 <summary> Chat </summary>
