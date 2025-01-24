@@ -12,14 +12,14 @@ type HTTPDoer interface {
 }
 
 type ClientConfig struct {
-	authToken  string
+	AuthToken  string
 	BaseURL    string
 	HTTPClient HTTPDoer
 }
 
-func DefaultConfig(authToken string) ClientConfig {
+func DefaultConfig(AuthToken string) ClientConfig {
 	return ClientConfig{
-		authToken:  authToken,
+		AuthToken:  AuthToken,
 		BaseURL:    BaseURL,
 		HTTPClient: &http.Client{},
 	}

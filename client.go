@@ -10,15 +10,15 @@ import (
 )
 
 type Client struct {
-	authToken string
-	baseURL   string
+	AuthToken string
+	BaseURL   string
 }
 
 // NewClient creates a new client with an authentication token.
-func NewClient(authToken string) *Client {
+func NewClient(AuthToken string) *Client {
 	return &Client{
-		authToken: authToken,
-		baseURL:   "https://api.deepseek.com/",
+		AuthToken: AuthToken,
+		BaseURL:   "https://api.deepseek.com/",
 	}
 }
 
@@ -31,8 +31,8 @@ func (c *Client) CreateChatCompletion(
 		return nil, fmt.Errorf("request cannot be nil")
 	}
 
-	req, err := utils.NewRequestBuilder(c.authToken).
-		SetBaseURL(c.baseURL).
+	req, err := utils.NewRequestBuilder(c.AuthToken).
+		SetBaseURL(c.BaseURL).
 		SetPath("chat/completions").
 		SetBodyFromStruct(request).
 		Build(ctx)
@@ -45,7 +45,6 @@ func (c *Client) CreateChatCompletion(
 	if err != nil {
 		return nil, fmt.Errorf("error sending request: %w", err)
 	}
-
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
@@ -68,8 +67,8 @@ func (c *Client) CreateChatCompletionStream(
 ) (ChatCompletionStream, error) {
 
 	request.Stream = true
-	req, err := utils.NewRequestBuilder(c.authToken).
-		SetBaseURL(c.baseURL).
+	req, err := utils.NewRequestBuilder(c.AuthToken).
+		SetBaseURL(c.BaseURL).
 		SetPath("chat/completions/").
 		SetBodyFromStruct(request).
 		Build(ctx)
