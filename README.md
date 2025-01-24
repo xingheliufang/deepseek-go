@@ -6,6 +6,7 @@ Deepseek-Go is a Go-based API wrapper for the [Deepseek](https://deepseek.com) p
 
 This library is designed for developers building Go applications that require seamless integration with Deepseek AI.
 
+
 ## Features
 
 - **Chat Completion**: Easily send chat messages and receive responses from Deepseek's AI models. It also supports streaming.
@@ -30,6 +31,14 @@ Before using the library, ensure you have:
 - A valid Deepseek API key.
 - Go installed on your system.
 
+### Supported Models
+
+- **deepseek-chat**  
+  A versatile model designed for conversational tasks.
+
+- **deepseek-reasoner**  
+  A specialized model for reasoning-based tasks.  
+  **Note:** The Reasoner model currently does not support level system/assistant messages. You will recieve a 400 error if you try to. 
 
 <details open>
 <summary> Chat </summary>
@@ -81,7 +90,7 @@ go run main.go
 </details>
 
 <details >
-	<summary> Sedning other params like Temp, Stop </summary>
+	<summary> Sending other params like Temp, Stop </summary>
 	<strong> You just need to extend the ChatCompletionMessage with the supported parameters. </strong>
 
 ```go
@@ -190,6 +199,10 @@ func main() {
 ```
 </details>
 
+---
+## Getting a Deepseek Key
+
+To use the Deepseek API, you need an API key. You can obtain one by signing up on the [Deepseek website](https://platform.deepseek.com/api_keys)
 
 ---
 
