@@ -3,46 +3,61 @@ package deepseek
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 )
 
-type ErrorResponse struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-}
-
-func (e ErrorResponse) Error() string {
-	return fmt.Sprintf("API error: %d - %s", e.Code, e.Message)
-}
-
 type APIError struct {
-	StatusCode int
-	ErrorMsg   string
+	StatusCode    int    // HTTP status code
+	APICode       int    // Business error code from API response
+	Message       string // Human-readable error message
+	OriginalError error  // Wrapped error for debugging
 }
 
-// @implements APIError
-func (a APIError) Error() string {
-	return fmt.Sprintf("API error %d: %s", a.StatusCode, a.ErrorMsg)
-}
-
-// Tries to handle errors listed on: https://api-docs.deepseek.com/quick_start/error_codes
-func HandleAPIError(resp *http.Response) error {
-	var apiErr ErrorResponse
-	if err := json.NewDecoder(resp.Body).Decode(&apiErr); err != nil {
-		switch resp.StatusCode {
-		case http.StatusUnauthorized:
-			return APIError{StatusCode: resp.StatusCode, ErrorMsg: "401 Error are a result of unauthorized acess. Please make sure your API key is correct."}
-		case http.StatusPaymentRequired:
-			return APIError{StatusCode: resp.StatusCode, ErrorMsg: "You have run out of balance. Please check your account's balance, and go to the Top up page to add funds. https://platform.deepseek.com/top_up"}
-		case http.StatusTooManyRequests:
-			return APIError{StatusCode: resp.StatusCode, ErrorMsg: "You are sending requests too quickly."}
-		case http.StatusNotFound:
-			return APIError{StatusCode: resp.StatusCode, ErrorMsg: apiErr.Message}
-		case http.StatusInternalServerError:
-			return APIError{StatusCode: resp.StatusCode, ErrorMsg: apiErr.Message}
-		default:
-			return APIError{StatusCode: resp.StatusCode, ErrorMsg: ("Failed to decode error response " + apiErr.Message)}
-		}
+func (e APIError) Error() string {
+	if e.APICode != 0 {
+		return fmt.Sprintf("HTTP %d (Code %d): %s", e.StatusCode, e.APICode, e.Message)
 	}
-	return APIError{StatusCode: resp.StatusCode, ErrorMsg: "Failed to decode error response"}
+	return fmt.Sprintf("HTTP %d: %s", e.StatusCode, e.Message)
+}
+
+func HandleAPIError(resp *http.Response) error {
+	defer func() { _ = resp.Body.Close() }()
+
+	var apiResponse struct {
+		Code    int    `json:"code"`
+		Message string `json:"message"`
+	}
+
+	body, _ := io.ReadAll(resp.Body)
+	err := json.Unmarshal(body, &apiResponse)
+
+	baseError := APIError{
+		StatusCode: resp.StatusCode,
+		APICode:    apiResponse.Code,
+		Message:    apiResponse.Message,
+	}
+
+	if err == nil && apiResponse.Code != 0 {
+		return baseError
+	}
+
+	// Handle cases couldn't parse the error response
+	switch resp.StatusCode {
+	case http.StatusUnauthorized:
+		baseError.Message = "Invalid authentication credentials"
+	case http.StatusPaymentRequired:
+		baseError.Message = "Insufficient account balance"
+	case http.StatusTooManyRequests:
+		baseError.Message = "Rate limit exceeded"
+	case http.StatusNotFound:
+		baseError.Message = "Requested resource not found"
+	case http.StatusInternalServerError:
+		baseError.Message = "Internal server error"
+	default:
+		baseError.Message = fmt.Sprintf("Unexpected API response (HTTP %d)", resp.StatusCode)
+	}
+
+	baseError.OriginalError = fmt.Errorf("failed to decode: %w (body: %s)", err, string(body))
+	return baseError
 }
