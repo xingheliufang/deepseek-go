@@ -12,38 +12,45 @@ type APIError struct {
 	APICode       int    // Business error code from API response
 	Message       string // Human-readable error message
 	OriginalError error  // Wrapped error for debugging
+	ResponseBody  string // Raw JSON response body
 }
 
 func (e APIError) Error() string {
 	if e.APICode != 0 {
 		return fmt.Sprintf("HTTP %d (Code %d): %s", e.StatusCode, e.APICode, e.Message)
 	}
-	return fmt.Sprintf("HTTP %d: %s", e.StatusCode, e.Message)
+	return fmt.Sprintf("HTTP %d: %s \n%v", e.StatusCode, e.Message, e.ResponseBody)
 }
 
 func HandleAPIError(resp *http.Response) error {
 	defer func() { _ = resp.Body.Close() }()
+
+	body, _ := io.ReadAll(resp.Body)
+	responseBody := string(body)
 
 	var apiResponse struct {
 		Code    int    `json:"code"`
 		Message string `json:"message"`
 	}
 
-	body, _ := io.ReadAll(resp.Body)
 	err := json.Unmarshal(body, &apiResponse)
 
 	baseError := APIError{
-		StatusCode: resp.StatusCode,
-		APICode:    apiResponse.Code,
-		Message:    apiResponse.Message,
+		StatusCode:   resp.StatusCode,
+		APICode:      apiResponse.Code,
+		Message:      apiResponse.Message,
+		ResponseBody: responseBody,
 	}
 
 	if err == nil && apiResponse.Code != 0 {
 		return baseError
 	}
 
-	// Handle cases couldn't parse the error response
+	// Handle cases where the error response couldn't be parsed
+	baseError.ResponseBody = responseBody
 	switch resp.StatusCode {
+	case http.StatusBadRequest:
+		baseError.Message = "Bad request"
 	case http.StatusUnauthorized:
 		baseError.Message = "Invalid authentication credentials"
 	case http.StatusPaymentRequired:
@@ -58,6 +65,6 @@ func HandleAPIError(resp *http.Response) error {
 		baseError.Message = fmt.Sprintf("Unexpected API response (HTTP %d)", resp.StatusCode)
 	}
 
-	baseError.OriginalError = fmt.Errorf("failed to decode: %w (body: %s)", err, string(body))
+	baseError.OriginalError = fmt.Errorf("failed to decode: %w (body: %s)", err, responseBody)
 	return baseError
 }
