@@ -41,7 +41,7 @@ Before using the library, ensure you have:
 - **deepseek-reasoner**  
   A specialized model for reasoning-based tasks.  
   Usage: `Model: deepseek.DeepSeekReasoner`. <br/>
-  **Note:** The [reasoner](https://api-docs.deepseek.com/guides/reasoning_model) model currently does not support level system/assistant messages. You will recieve a 400 error if you try to. We don't know why. 
+  **Note:** The [reasoner](https://api-docs.deepseek.com/guides/reasoning_model) requires unique conditions. Please refer to this issue [#8](https://github.com/cohesion-org/deepseek-go/issues/8). 
 
 <details open>
 <summary> Chat </summary>
