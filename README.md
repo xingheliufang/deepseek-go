@@ -7,6 +7,7 @@ Deepseek-Go is a Go-based API wrapper for the [Deepseek](https://deepseek.com) p
 
 This library is designed for developers building Go applications that require seamless integration with Deepseek AI.
 
+The recent gain in popularity and cybersecurity issues Deepseek has seen makes for many problems while using the API. Please refer to the [status](https://status.deepseek.com/) page for the current status.
 
 ## Features
 
