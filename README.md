@@ -270,7 +270,7 @@ func main() {
 </details>
 
 <details>
-<summary> Get the list of All the models the API supports right now. This is different form what deepseek-go might support. </summary>
+<summary> Get the list of All the models the API supports right now. This is different from what deepseek-go might support. </summary>
 
 ```go
 func ListModels() {
