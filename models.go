@@ -19,18 +19,18 @@ const (
 )
 
 type Model struct {
-	ID      string `json:"id"`
-	Object  string `json:"object"`
-	OwnedBy string `json:"owned_by"`
+	ID      string `json:"id"`       //The id of the model (string)
+	Object  string `json:"object"`   //The object of the model (string)
+	OwnedBy string `json:"owned_by"` //The owner of the model(usally deepseek)
 }
 
 type APIModels struct {
-	Object string  `json:"object"`
-	Data   []Model `json:"data"`
+	Object string  `json:"object"` //Object (string)
+	Data   []Model `json:"data"`   // List of Models
 }
 
 // Models supported by the API itself
-func ListALLModels(c *Client, ctx context.Context) (*APIModels, error) {
+func ListAllModels(c *Client, ctx context.Context) (*APIModels, error) {
 	req, err := utils.NewRequestBuilder(c.AuthToken).
 		SetBaseURL("https://api.deepseek.com/").
 		SetPath("models").
