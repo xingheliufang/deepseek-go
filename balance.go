@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"net/http"
+
+	handlers "github.com/cohesion-org/deepseek-go/handlers"
+	utils "github.com/cohesion-org/deepseek-go/utils"
 )
 
 type BalanceInfo struct {
@@ -20,29 +22,29 @@ type BalanceResponse struct {
 	BalanceInfos []BalanceInfo `json:"balance_infos"`
 }
 
-func GetBalance(client *Client, ctx context.Context) (*BalanceResponse, error) {
+func GetBalance(c *Client, ctx context.Context) (*BalanceResponse, error) {
 
-	url := "https://api.deepseek.com/user/balance"
-	method := "GET"
-
-	hclient := &http.Client{}
-	req, err := http.NewRequest(method, url, nil)
+	req, err := utils.NewRequestBuilder(c.AuthToken).
+		SetBaseURL("https://api.deepseek.com/").
+		SetPath("user/balance").
+		BuildGet(ctx)
 
 	if err != nil {
-		fmt.Println(err)
-		return nil, err
+		return nil, fmt.Errorf("error building request: %w", err)
 	}
-	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Authorization", "Bearer "+client.AuthToken)
 
-	res, err := hclient.Do(req)
+	resp, err := handlers.HandelNormalRequest(req)
+
 	if err != nil {
-		fmt.Println(err)
-		return nil, err
+		return nil, fmt.Errorf("error sending request: %w", err)
 	}
-	defer res.Body.Close()
+	defer resp.Body.Close()
 
-	body, err := io.ReadAll(res.Body)
+	if resp.StatusCode >= 400 {
+		return nil, HandleAPIError(resp)
+	}
+
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
