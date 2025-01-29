@@ -115,29 +115,29 @@ go run main.go
 </details>
 
 <details >
-	<summary> Multi-Conversation with Deepseek with a bad approach. Read #6 and #7 for more info.</summary>
+	<summary> Multi-Conversation with Deepseek. </summary>
 
 ```go
 package deepseek_examples
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
 	"github.com/cohesion-org/deepseek-go/constants"
 )
 
-func Multi_Chat() {
+func MultiChat() {
 	client := deepseek.NewClient("DEEPSEEK_KEY")
 	ctx := context.Background()
 
 	messages := []deepseek.ChatCompletionMessage{{
 		Role:    constants.ChatMessageRoleUser,
-		Content: "What's the highest mountain in the world? One word response only.",
+		Content: "Who is the president of the United States? One word response only.",
 	}}
 
+	// Round 1: First API call
 	response1, err := client.CreateChatCompletion(ctx, &deepseek.ChatCompletionRequest{
 		Model:    deepseek.DeepSeekChat,
 		Messages: messages,
@@ -146,16 +146,17 @@ func Multi_Chat() {
 		log.Fatalf("Round 1 failed: %v", err)
 	}
 
-	messages = append(messages, deepseek.ChatCompletionMessage{
-		Role:    response1.Choices[0].Message.Role,
-		Content: response1.Choices[0].Message.Content,
-	})
+	response1Message, err := deepseek.MapMessageToChatCompletionMessage(response1.Choices[0].Message)
+	if err != nil {
+		log.Fatalf("Mapping to message failed: %v", err)
+	}
+	messages = append(messages, response1Message)
 
-	fmt.Printf("Messages after Round 1: %+v\n", messages)
-
+	log.Printf("The messages after response 1 are: %v", messages)
+	// Round 2: Second API call
 	messages = append(messages, deepseek.ChatCompletionMessage{
 		Role:    constants.ChatMessageRoleUser,
-		Content: "What is the second?",
+		Content: "Who was the one in the previous term.",
 	})
 
 	response2, err := client.CreateChatCompletion(ctx, &deepseek.ChatCompletionRequest{
@@ -166,11 +167,15 @@ func Multi_Chat() {
 		log.Fatalf("Round 2 failed: %v", err)
 	}
 
-	fmt.Printf("Final messages: %+v\n", append(messages, deepseek.ChatCompletionMessage{
-		Role:    response2.Choices[0].Message.Role,
-		Content: response2.Choices[0].Message.Content,
-	}))
+	response2Message, err := deepseek.MapMessageToChatCompletionMessage(response2.Choices[0].Message)
+	if err != nil {
+		log.Fatalf("Mapping to message failed: %v", err)
+	}
+	messages = append(messages, response2Message)
+	log.Printf("The messages after response 1 are: %v", messages)
+
 }
+
 ```
 
 </details>
@@ -260,6 +265,22 @@ func main() {
 		log.Fatalf("No balance information returned")
 	}
 	log.Printf("%+v\n", balance)
+}
+```
+</details>
+
+<details>
+<summary> Get the list of All the models the API supports right now. This is different form what deepseek-go might support. </summary>
+
+```go
+func ListModels() {
+	client := deepseek.NewClient("DEEPSEEK_KEY")
+	ctx := context.Background()
+	models, err := deepseek.ListAllModels(client, ctx)
+	if err != nil {
+		t.Fatalf("Error listing models: %v", err)
+	}
+	fmt.Printf("\n%+v\n", models)
 }
 ```
 </details>
