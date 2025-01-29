@@ -11,15 +11,15 @@ import (
 )
 
 type BalanceInfo struct {
-	Currency        string `json:"currency"`
-	TotalBalance    string `json:"total_balance"`
-	GrantedBalance  string `json:"granted_balance"`
-	ToppedUpBalance string `json:"topped_up_balance"`
+	Currency        string `json:"currency"`          //The currency of the balance.
+	TotalBalance    string `json:"total_balance"`     //The total available balance, including the granted balance and the topped-up balance.
+	GrantedBalance  string `json:"granted_balance"`   //The total not expired granted balance.
+	ToppedUpBalance string `json:"topped_up_balance"` //The total topped-up balance.
 }
 
 type BalanceResponse struct {
-	IsAvailable  bool          `json:"is_available"`
-	BalanceInfos []BalanceInfo `json:"balance_infos"`
+	IsAvailable  bool          `json:"is_available"`  //Whether the user's balance is sufficient for API calls.
+	BalanceInfos []BalanceInfo `json:"balance_infos"` //List of Balance infos
 }
 
 func GetBalance(c *Client, ctx context.Context) (*BalanceResponse, error) {
