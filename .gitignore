@@ -27,7 +27,6 @@ go.work.sum
 todo.txt
 
 #will change the below in the future when tests are good enough.
-*_test.go 
 
 #python tests
 *.py
