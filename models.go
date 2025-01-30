@@ -40,7 +40,7 @@ func ListAllModels(c *Client, ctx context.Context) (*APIModels, error) {
 		return nil, fmt.Errorf("error building request: %w", err)
 	}
 
-	resp, err := handlers.HandelNormalRequest(req)
+	resp, err := handlers.HandleNormalRequest(req)
 
 	if err != nil {
 		return nil, fmt.Errorf("error sending request: %w", err)
