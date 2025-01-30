@@ -12,8 +12,8 @@ import (
 type AuthedRequest struct {
 	AuthToken string
 	BaseURL   string
-	path      string
-	body      []byte
+	Path      string
+	Body      []byte
 }
 
 type AuthedRequestBuilder interface {
@@ -38,7 +38,7 @@ func (rb *AuthedRequest) SetBaseURL(BaseURL string) *AuthedRequest {
 
 // SetPath sets the path for the request.
 func (rb *AuthedRequest) SetPath(path string) *AuthedRequest {
-	rb.path = path
+	rb.Path = path
 	return rb
 }
 
@@ -50,18 +50,18 @@ func (rb *AuthedRequest) SetBodyFromStruct(data interface{}) *AuthedRequest {
 	if err != nil {
 		panic(fmt.Sprintf("failed to marshal body: %v", err)) // Using panic for debugging; replace in future with proper error handling.
 	}
-	rb.body = body
+	rb.Body = body
 	return rb
 }
 
 // Build constructs the HTTP request [Method:Post].
 func (rb *AuthedRequest) Build(ctx context.Context) (*http.Request, error) {
-	if rb.BaseURL == "" || rb.path == "" {
+	if rb.BaseURL == "" || rb.Path == "" {
 		return nil, fmt.Errorf("BaseURL or path not set")
 	}
 
-	url := fmt.Sprintf("%s%s", rb.BaseURL, rb.path)
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(rb.body))
+	url := fmt.Sprintf("%s%s", rb.BaseURL, rb.Path)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(rb.Body))
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
@@ -72,12 +72,12 @@ func (rb *AuthedRequest) Build(ctx context.Context) (*http.Request, error) {
 
 // Build constructs the HTTP request [Method:Post].
 func (rb *AuthedRequest) BuildStream(ctx context.Context) (*http.Request, error) {
-	if rb.BaseURL == "" || rb.path == "" {
+	if rb.BaseURL == "" || rb.Path == "" {
 		return nil, fmt.Errorf("BaseURL or path not set")
 	}
 
-	url := fmt.Sprintf("%s%s", rb.BaseURL, rb.path)
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(rb.body))
+	url := fmt.Sprintf("%s%s", rb.BaseURL, rb.Path)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(rb.Body))
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
@@ -89,12 +89,12 @@ func (rb *AuthedRequest) BuildStream(ctx context.Context) (*http.Request, error)
 
 // Build constructs the HTTP request [Method:Get].
 func (rb *AuthedRequest) BuildGet(ctx context.Context) (*http.Request, error) {
-	if rb.BaseURL == "" || rb.path == "" {
+	if rb.BaseURL == "" || rb.Path == "" {
 		return nil, fmt.Errorf("BaseURL or path not set")
 	}
 
-	url := fmt.Sprintf("%s%s", rb.BaseURL, rb.path)
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, bytes.NewReader(rb.body))
+	url := fmt.Sprintf("%s%s", rb.BaseURL, rb.Path)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, bytes.NewReader(rb.Body))
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
