@@ -8,7 +8,7 @@ import (
 
 func HandleSendChatCompletionRequest(req *http.Request) (*http.Response, error) {
 	client := &http.Client{
-		Timeout: 120 * time.Second,
+		Timeout: 240 * time.Second,
 	}
 	resp, err := client.Do(req)
 	if err != nil {
