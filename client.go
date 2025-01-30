@@ -69,9 +69,9 @@ func (c *Client) CreateChatCompletionStream(
 	request.Stream = true
 	req, err := utils.NewRequestBuilder(c.AuthToken).
 		SetBaseURL(c.BaseURL).
-		SetPath("chat/completions/").
+		SetPath("chat/completions").
 		SetBodyFromStruct(request).
-		Build(ctx)
+		BuildStream(ctx)
 
 	if err != nil {
 		return nil, fmt.Errorf("error building request: %w", err)
