@@ -292,6 +292,70 @@ To use the Deepseek API, you need an API key. You can obtain one by signing up o
 
 ---
 
+## Running Tests
+
+### Setup
+
+1. Copy the example environment file:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Add your DeepSeek API key to `.env`:
+   ```
+   DEEPSEEK_KEY=your_api_key_here
+   ```
+
+3. (Optional) Configure test timeout:
+   ```
+   # Default is 30s, increase for slower connections
+   TEST_TIMEOUT=1m
+   ```
+
+
+### Test Organization
+
+The tests are organized into several files:
+- `client_test.go`: Client configuration and error handling
+- `chat_test.go`: Chat completion functionality 
+- `chat_stream_test.go`: Chat streaming functionality
+- `models_test.go`: Model listing and retrieval
+- `balance_test.go`: Account balance operations
+- `tokens_test.go`: Token estimation utilities
+- `errors_test.go`: Tests the error handler
+
+### Running Tests
+
+1. Run all tests (requires API key):
+   ```bash
+   go test -v ./...
+   ```
+
+2. Run tests in short mode (skips API calls):
+   ```bash
+   go test -v -short ./...
+   ```
+
+3. Run tests with race detection:
+   ```bash
+   go test -v -race ./...
+   ```
+
+4. Run tests with coverage:
+   ```bash
+   go test -v -coverprofile=coverage.txt -covermode=atomic ./...
+   ```
+
+   View coverage in browser:
+   ```bash
+   go tool cover -html=coverage.txt
+   ```
+
+5. Run specific test:
+   ```bash
+   # Example: Run only chat completion tests
+   go test -v -run TestCreateChatCompletion ./...
+   ```
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

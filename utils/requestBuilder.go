@@ -83,7 +83,6 @@ func (rb *AuthedRequest) BuildStream(ctx context.Context) (*http.Request, error)
 	}
 	req.Header.Set("Authorization", "Bearer "+rb.AuthToken)
 	req.Header.Set("cache-control", "no-cache")
-	// req.Header.Set("Content-Type", "text/event-stream; charset=utf-8") create a new issue to figure this out in the meantime.
 	req.Header.Set("Content-Type", "application/json")
 	return req, nil
 }
