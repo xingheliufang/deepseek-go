@@ -31,3 +31,5 @@ todo.txt
 #python tests
 *.py
 python
+
+chat_demo_test.go
