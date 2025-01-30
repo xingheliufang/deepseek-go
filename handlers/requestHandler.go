@@ -26,7 +26,7 @@ func HandleSendChatCompletionRequest(req *http.Request) (*http.Response, error) 
 		return nil, fmt.Errorf("error getting timeout: %w", err)
 	}
 	client := &http.Client{
-     Timeout: timeout,
+		Timeout: timeout,
 	}
 
 	resp, err := client.Do(req)
@@ -37,7 +37,7 @@ func HandleSendChatCompletionRequest(req *http.Request) (*http.Response, error) 
 	return resp, nil
 }
 
-func HandelNormalRequest(req *http.Request) (*http.Response, error) {
+func HandleNormalRequest(req *http.Request) (*http.Response, error) {
 	timeout, err := HandleTimeout()
 	if err != nil {
 		return nil, fmt.Errorf("error getting timeout: %w", err)
@@ -54,4 +54,3 @@ func HandelNormalRequest(req *http.Request) (*http.Response, error) {
 
 	return resp, nil
 }
-

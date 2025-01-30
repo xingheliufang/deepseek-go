@@ -52,7 +52,7 @@ func TestHandleNormalRequest(t *testing.T) {
 		req, err := http.NewRequest("GET", ts.URL, nil)
 		require.NoError(t, err)
 
-		resp, err := handlers.HandelNormalRequest(req)
+		resp, err := handlers.HandleNormalRequest(req)
 		require.NoError(t, err)
 		defer resp.Body.Close()
 
@@ -63,7 +63,7 @@ func TestHandleNormalRequest(t *testing.T) {
 		req, err := http.NewRequest("GET", "http://invalid-url", nil)
 		require.NoError(t, err)
 
-		resp, err := handlers.HandelNormalRequest(req)
+		resp, err := handlers.HandleNormalRequest(req)
 		require.Error(t, err)
 		assert.Nil(t, resp)
 		assert.Contains(t, err.Error(), "error sending request:")
@@ -101,7 +101,7 @@ func TestTimeoutConfiguration(t *testing.T) {
 		require.NoError(t, err)
 
 		start := time.Now()
-		resp, err := handlers.HandelNormalRequest(req)
+		resp, err := handlers.HandleNormalRequest(req)
 		require.NoError(t, err)
 		defer resp.Body.Close()
 
