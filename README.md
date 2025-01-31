@@ -312,17 +312,24 @@ To use the Deepseek API, you need an API key. You can obtain one by signing up o
    TEST_TIMEOUT=1m
    ```
 
-
 ### Test Organization
 
-The tests are organized into several files:
-- `client_test.go`: Client configuration and error handling
+The tests are organized into several files and folders:
+
+### Main Package
+<!-- - `client_test.go`: Client configuration and error handling -->
 - `chat_test.go`: Chat completion functionality 
 - `chat_stream_test.go`: Chat streaming functionality
 - `models_test.go`: Model listing and retrieval
 - `balance_test.go`: Account balance operations
 - `tokens_test.go`: Token estimation utilities
-- `errors_test.go`: Tests the error handler
+<!-- - `errors_test.go`: Tests the error handler -->
+### Handlers Package
+- `handlers/requestHandler_test.go`: Tests for the request handler
+- `handlers/responseHandler_test.go`: Tests for the response handler
+
+### Utils Package
+- `utils/requestBuilder_test.go`: Tests for the request builder
 
 ### Running Tests
 
