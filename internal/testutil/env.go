@@ -26,7 +26,7 @@ func LoadTestConfig(t *testing.T) *TestConfig {
 	}
 
 	config := &TestConfig{
-		APIKey:      os.Getenv("DEEPSEEK_KEY"),
+		APIKey:      os.Getenv("TEST_DEEPSEEK_API_KEY"),
 		TestTimeout: 30 * time.Second,
 	}
 
@@ -39,7 +39,7 @@ func LoadTestConfig(t *testing.T) *TestConfig {
 
 	// Skip tests if API key is not set
 	if config.APIKey == "" {
-		t.Skip("Skipping test: DEEPSEEK_KEY not set")
+		t.Skip("Skipping test: TEST_DEEPSEEK_API_KEY not set")
 	}
 
 	return config
