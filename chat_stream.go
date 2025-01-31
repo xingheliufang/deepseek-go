@@ -10,11 +10,13 @@ import (
 	"strings"
 )
 
+// StreamChatCompletionMessage represents a single message in a chat completion stream.
 type StreamChatCompletionMessage struct {
 	Role    string `json:"role"`
 	Content string `json:"content"`
 }
 
+// StreamChatCompletionRequest represents the request body for a streaming chat completion API call.
 type StreamChatCompletionRequest struct {
 	Stream           bool                    `json:"stream,omitempty"`            //Comments: Defaults to true, since it's "STREAM"
 	Model            string                  `json:"model"`                       // Required: Model ID, e.g., "deepseek-chat"
@@ -31,6 +33,7 @@ type StreamChatCompletionRequest struct {
 	TopLogProbs      int                     `json:"top_logprobs,omitempty"`      // Optional: Number of top tokens with log probabilities, <= 20
 }
 
+// ChatCompletionStream is an interface for receiving streaming chat completion responses.
 type ChatCompletionStream interface {
 	Recv() (*StreamChatCompletionResponse, error)
 	Close() error
@@ -38,38 +41,43 @@ type ChatCompletionStream interface {
 
 // chatCompletionStream implements the ChatCompletionStream interface.
 type chatCompletionStream struct {
-	ctx    context.Context
-	cancel context.CancelFunc
-	resp   *http.Response
-	reader *bufio.Reader
+	ctx    context.Context    // Context for cancellation.
+	cancel context.CancelFunc // Cancel function for the context.
+	resp   *http.Response     // HTTP response from the API call.
+	reader *bufio.Reader      // Reader for the response body.
 }
 
+// StreamUsage represents token usage statistics for a streaming chat completion response. You will get {0 0 0} up until the last stream delta.
 type StreamUsage struct {
-	PromptTokens     int `json:"prompt_tokens"`
-	CompletionTokens int `json:"completion_tokens"`
-	TotalTokens      int `json:"total_tokens"`
+	PromptTokens     int `json:"prompt_tokens"`     // Number of tokens in the prompt.
+	CompletionTokens int `json:"completion_tokens"` // Number of tokens in the completion.
+	TotalTokens      int `json:"total_tokens"`      // Total number of tokens used.
 }
 
+// StreamDelta represents a delta in the chat completion stream.
 type StreamDelta struct {
-	Role    string `json:"role,omitempty"`
-	Content string `json:"content"`
+	Role    string `json:"role,omitempty"` // Role of the message.
+	Content string `json:"content"`        // Content of the message.
 }
 
+// StreamChoices represents a choice in the chat completion stream.
 type StreamChoices struct {
-	Index        int `json:"index"`
-	Delta        StreamDelta
-	FinishReason string `json:"finish_reason"`
+	Index        int         `json:"index"` // Index of the choice.
+	Delta        StreamDelta // Delta information.
+	FinishReason string      `json:"finish_reason"` // Reason for finishing the generation.
 }
 
+// StreamChatCompletionResponse represents a single response from a streaming chat completion API call.
 type StreamChatCompletionResponse struct {
-	ID      string          `json:"id"`
-	Object  string          `json:"object"`
-	Created int64           `json:"created"`
-	Model   string          `json:"model"`
-	Choices []StreamChoices `json:"choices"`
-	Usage   *StreamUsage    `json:"usage,omitempty"`
+	ID      string          `json:"id"`              // ID of the response.
+	Object  string          `json:"object"`          // Type of object.
+	Created int64           `json:"created"`         // Creation timestamp.
+	Model   string          `json:"model"`           // Model used.
+	Choices []StreamChoices `json:"choices"`         // Choices generated.
+	Usage   *StreamUsage    `json:"usage,omitempty"` // Usage statistics (optional).
 }
 
+// Recv receives the next response from the stream.
 func (s *chatCompletionStream) Recv() (*StreamChatCompletionResponse, error) {
 	reader := s.reader
 	for {
@@ -102,5 +110,9 @@ func (s *chatCompletionStream) Recv() (*StreamChatCompletionResponse, error) {
 // Close terminates the stream.
 func (s *chatCompletionStream) Close() error {
 	s.cancel()
-	return s.resp.Body.Close()
+	err := s.resp.Body.Close()
+	if err != nil {
+		return fmt.Errorf("failed to close response body: %w", err)
+	}
+	return nil
 }
