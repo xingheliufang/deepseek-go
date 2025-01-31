@@ -12,7 +12,7 @@ import (
 )
 
 func Multi_Chat() {
-	client := deepseek.NewClient("DEEPSEEK_KEY")
+	client := deepseek.NewClient("DEEPSEEK_API_KEY")
 	ctx := context.Background()
 
 	messages := []deepseek.ChatCompletionMessage{{

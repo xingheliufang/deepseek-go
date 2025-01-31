@@ -64,7 +64,7 @@ import (
 
 func main() {
 	// Set up the Deepseek client
-    client := deepseek.NewClient(os.Getenv("DEEPSEEK_KEY"))
+    client := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"))
 
 	// Create a chat completion request
 	request := &deepseek.ChatCompletionRequest{
@@ -129,7 +129,7 @@ import (
 )
 
 func MultiChat() {
-	client := deepseek.NewClient("DEEPSEEK_KEY")
+	client := deepseek.NewClient("DEEPSEEK_API_KEY")
 	ctx := context.Background()
 
 	messages := []deepseek.ChatCompletionMessage{{
@@ -199,7 +199,7 @@ import (
 )
 
 func main() {
-	client := deepseek.NewClient(os.Getenv("DEEPSEEK_KEY"))
+	client := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"))
 	request := &deepseek.StreamChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
@@ -250,7 +250,7 @@ import (
 )
 
 func main() {
-	client := deepseek.NewClient(os.Getenv("DEEPSEEK_KEY"))
+	client := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"))
 	ctx := context.Background()
 	balance, err := deepseek.GetBalance(client, ctx)
 	if err != nil {
@@ -274,7 +274,7 @@ func main() {
 
 ```go
 func ListModels() {
-	client := deepseek.NewClient("DEEPSEEK_KEY")
+	client := deepseek.NewClient("DEEPSEEK_API_KEY")
 	ctx := context.Background()
 	models, err := deepseek.ListAllModels(client, ctx)
 	if err != nil {
@@ -303,7 +303,7 @@ To use the Deepseek API, you need an API key. You can obtain one by signing up o
 
 2. Add your DeepSeek API key to `.env`:
    ```
-   DEEPSEEK_KEY=your_api_key_here
+   TEST_DEEPSEEK_API_KEY=your_api_key_here
    ```
 
 3. (Optional) Configure test timeout:

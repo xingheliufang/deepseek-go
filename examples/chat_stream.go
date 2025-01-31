@@ -13,7 +13,7 @@ import (
 )
 
 func Streaming() {
-	client := deepseek.NewClient(os.Getenv("DEEPSEEK_KEY"))
+	client := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"))
 	request := &deepseek.StreamChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
