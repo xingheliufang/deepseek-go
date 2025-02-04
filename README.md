@@ -285,6 +285,38 @@ func ListModels() {
 ```
 </details>
 
+<details> 
+<summary> Get the estimated tokens for the request. </summary>
+
+This is adpated from [the  Deepseek's estimation](https://api-docs.deepseek.com/quick_start/token_usage).
+
+```go
+func Estimation() {
+	client := deepseek.NewClient("DEEPSEEK_API_KEY"))
+	request := &deepseek.ChatCompletionRequest{
+		Model: deepseek.DeepSeekChat,
+		Messages: []deepseek.ChatCompletionMessage{
+			{Role: constants.ChatMessageRoleSystem, Content: "Just respond with the time it might take you to complete this request."},
+			{Role: constants.ChatMessageRoleUser, Content: "The text to evaluate the time is: Who is the greatest singer in the world?"},
+		},
+	}
+	ctx := context.Background()
+
+	tokens := deepseek.EstimateTokensFromMessages(request)
+	fmt.Println("Estimated tokens for the request is: ", tokens.EstimatedTokens)
+	response, err := client.CreateChatCompletion(ctx, request)
+
+	if err != nil {
+		log.Fatalf("error: %v", err)
+	}
+	
+	fmt.Println("Response:", response.Choices[0].Message.Content, "\nActual Tokens Used:", response.Usage.PromptTokens)
+}
+
+```
+
+</details>
+
 ---
 ## Getting a Deepseek Key
 
