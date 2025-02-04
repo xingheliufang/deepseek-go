@@ -107,14 +107,17 @@ import (
 )
 
 func main() {
+
+	// Azure URL
+	baseURL := "https://models.inference.ai.azure.com/"
+
 	// Set up the Deepseek client
-    client := deepseek.NewAzureClient(os.Getenv("YOUR_TOKEN"))
+    client := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"), baseURL)
 
 	// Create a chat completion request
 	request := &deepseek.ChatCompletionRequest{
 		Model: deepseek.AzureDeepSeekR1,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleSystem, Content: "Answer every question using slang."},
 			{Role: constants.ChatMessageRoleUser, Content: "Which is the tallest mountain in the world?"},
 		},
 	}
