@@ -1,0 +1,44 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run tests with Go ${{ matrix.gov }} on ${{ matrix.os}}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        gov: [1.23]
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Go ${{ matrix.gov }}
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.gov }}
+        id: go
+
+      # Install required packages including git
+      - name: Install required packages
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ca-certificates git
+          sudo update-ca-certificates
+
+      - name: Get dependencies
+        run: |
+          git config --global http.sslVerify true
+          go mod download
+        
+      - name: Run tests
+        run: go test -v
+        env:
+          TEST_DEEPSEEK_API_KEY: ${{ secrets.TEST_DEEPSEEK_API_KEY }}
+          TEST_TIMEOUT: ${{ secrets.TEST_TIMEOUT }}
