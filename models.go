@@ -11,11 +11,11 @@ import (
 )
 
 // Create chat and coder models here!
-
 const (
 	DeepSeekChat     = "deepseek-chat"
 	DeepSeekCoder    = "deepseek-coder"
 	DeepSeekReasoner = "deepseek-reasoner"
+	AzureDeepSeekR1  = "DeepSeek-R1" // Azure model
 )
 
 type Model struct {

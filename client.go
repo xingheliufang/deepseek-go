@@ -14,12 +14,18 @@ type Client struct {
 	BaseURL   string
 }
 
-// NewClient creates a new client with an authentication token.
-func NewClient(AuthToken string) *Client {
+// NewClient creates a new client with an authentication token and an optional custom baseURL.
+// If no baseURL is provided, it defaults to "https://api.deepseek.com/".
+func NewClient(AuthToken string, baseURL ...string) *Client {
+	url := "https://api.deepseek.com/"
+	if len(baseURL) > 0 {
+		url = baseURL[0]
+	}
 	return &Client{
 		AuthToken: AuthToken,
-		BaseURL:   "https://api.deepseek.com/",
+		BaseURL:   url,
 	}
+
 }
 
 // CreateChatCompletion sends a chat completion request and returns the generated response.
