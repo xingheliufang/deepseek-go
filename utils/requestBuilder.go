@@ -67,6 +67,7 @@ func (rb *AuthedRequest) Build(ctx context.Context) (*http.Request, error) {
 	}
 	req.Header.Set("Authorization", "Bearer "+rb.AuthToken)
 	req.Header.Set("Content-Type", "application/json")
+
 	return req, nil
 }
 

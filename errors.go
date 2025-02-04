@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 )
 
 type APIError struct {
@@ -21,12 +22,21 @@ func (e APIError) Error() string {
 	}
 	return fmt.Sprintf("HTTP %d: %s \n%v", e.StatusCode, e.Message, e.ResponseBody)
 }
-
 func HandleAPIError(resp *http.Response) error {
 	defer func() { _ = resp.Body.Close() }()
 
 	body, _ := io.ReadAll(resp.Body)
 	responseBody := string(body)
+
+	// Check if the response is HTML
+	if strings.HasPrefix(responseBody, "<html>") {
+		return APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "Unexpected HTML response (model may not exist). This is likely an issue with the how some external servers return html responses for error.",
+		}
+	}
+
+	// why are we even defining a new struct here? // We can just use the APIError struct above. // Because we want to parse the JSON response and extract the error message. // We can use the APIError struct above to do that.
 
 	var apiResponse struct {
 		Code    int    `json:"code"`
