@@ -53,28 +53,17 @@ func HandleChatCompletionResponse(resp *http.Response) (*ChatCompletionResponse,
 
 	var parsedResponse ChatCompletionResponse
 	if err := json.Unmarshal(body, &parsedResponse); err != nil {
-		return nil, handleAPIError(resp)
+		return nil, handleAPIError(body)
 	}
 	return &parsedResponse, nil
 }
 
-func handleAPIError(resp *http.Response) error {
-	defer func() { _ = resp.Body.Close() }()
-	body, _ := io.ReadAll(resp.Body)
+func handleAPIError(body []byte) error {
 	responseBody := string(body)
 
-	if strings.HasPrefix(responseBody, "<html>") {
-		return fmt.Errorf("unexpected HTML response (model may not exist). This is likely an issue with the how some external servers return html responses for error")
+	if strings.HasPrefix(responseBody, "<!DOCTYPE html>") {
+		return fmt.Errorf("unexpected HTML response (model may not exist). This is likely an issue with the how some external servers return html responses for error. Make sure you are calling the right path or models")
 
 	}
-	var apiResponse struct {
-		Code    int    `json:"code"`
-		Message string `json:"message"`
-	}
-
-	err := json.Unmarshal(body, &apiResponse)
-	if err == nil && apiResponse.Code != 0 {
-		return fmt.Errorf("parsing error %v: %s", apiResponse.Code, apiResponse.Message)
-	}
-	return fmt.Errorf("parsing error %d: %s", resp.StatusCode, responseBody)
+	return fmt.Errorf("%s", responseBody)
 }
