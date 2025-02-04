@@ -10,12 +10,17 @@ import (
 	utils "github.com/cohesion-org/deepseek-go/utils"
 )
 
-// Create chat and coder models here!
+// Official DeepSeek Models
 const (
 	DeepSeekChat     = "deepseek-chat"
-	DeepSeekCoder    = "deepseek-coder"
+	DeepSeekCoder    = "deepseek-coder" // not sure if this exists anymore
 	DeepSeekReasoner = "deepseek-reasoner"
-	AzureDeepSeekR1  = "DeepSeek-R1" // Azure model
+)
+
+// External Models that can be used with the API
+const (
+	AzureDeepSeekR1      = "DeepSeek-R1"          // Azure model for DeepSeek R1
+	OpenRouterDeepSeekR1 = "deepseek/deepseek-r1" // OpenRouter model for DeepSeek R1
 )
 
 type Model struct {
