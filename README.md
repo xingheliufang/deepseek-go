@@ -44,9 +44,15 @@ Before using the library, ensure you have:
   Usage: `Model: deepseek.DeepSeekReasoner`. <br/>
   **Note:** The [reasoner](https://api-docs.deepseek.com/guides/reasoning_model) requires unique conditions. Please refer to this issue [#8](https://github.com/cohesion-org/deepseek-go/issues/8). 
 
+### External Providers
 - **Azure DeepSeekR1**  
-  Same as `deepseek-reasoner`. Its Just provided by Azure . <br/>
+  Same as `deepseek-reasoner`, but provided by Azure. <br/>
   Usage: `Model: deepseek.AzureDeepSeekR1`
+
+- **OpenRouter DeepSeek1** <br/>
+  Same as `deepseek-reasoner`, but provided by OpenRouter. <br/>
+  Usage: `Model: deepseek.OpenRouterR1`
+
 
 <details open>
 <summary> Chat </summary>
@@ -90,8 +96,10 @@ func main() {
 	fmt.Println("Response:", response.Choices[0].Message.Content)
 }
 ```
+</details>
 
-Using Azure:
+<details>
+<summary> Using external providers such as Azure or OpenRouter. </summary>
 
 ```go
 package main
@@ -108,15 +116,19 @@ import (
 
 func main() {
 
-	// Azure URL
+	// Azure
 	baseURL := "https://models.inference.ai.azure.com/"
 
+	// OpenRouter
+	// baseURL := "https://openrouter.ai/api/v1/"
+
 	// Set up the Deepseek client
-    client := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"), baseURL)
+    client := deepseek.NewClient(os.Getenv("PROVIDER_API_KEY"), baseURL)
 
 	// Create a chat completion request
 	request := &deepseek.ChatCompletionRequest{
 		Model: deepseek.AzureDeepSeekR1,
+		// Model: deepseek.OpenRouterDeepSeekR1,
 		Messages: []deepseek.ChatCompletionMessage{
 			{Role: constants.ChatMessageRoleUser, Content: "Which is the tallest mountain in the world?"},
 		},
@@ -134,10 +146,9 @@ func main() {
 }
 ```
 
-Save this code to a file (e.g., `main.go`), and run it:
-```sh
-go run main.go
-```
+Note: If you wish to use other providers that are not supported by us, you can simply extend the baseURL(as shown above), and pass the name of your model as a string to `Model` while creating the `ChatCompletionRequest`. This will work as long as the provider follows the same API structure as Azure or OpenRouter.
+
+
 </details>
 
 <details >
