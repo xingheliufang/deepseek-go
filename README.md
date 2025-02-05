@@ -20,7 +20,7 @@ The recent gain in popularity and cybersecurity issues Deepseek has seen makes f
 To use Deepseek-Go, ensure you have Go installed, and run:
 
 ```sh
-go get github.com/cohesion-org/deepseek-go
+go get github.com/cohesion-org/deepseek-go@v0.2.0
 ```
 
 ## Getting Started
