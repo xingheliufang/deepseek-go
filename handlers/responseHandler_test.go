@@ -2,7 +2,6 @@ package handlers_test
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
@@ -246,6 +245,6 @@ func TestErrorWrapping(t *testing.T) {
 		}
 		_, err := handlers.HandleChatCompletionResponse(resp)
 		require.Error(t, err)
-		assert.True(t, errors.As(err, new(*json.SyntaxError)))
+		assert.ErrorContains(t, err, "failed to parse response JSON")
 	})
 }
