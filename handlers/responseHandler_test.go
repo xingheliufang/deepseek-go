@@ -130,7 +130,7 @@ func TestHandleChatCompletionResponse(t *testing.T) {
 					PromptCacheHitTokens:  3,
 					PromptCacheMissTokens: 2,
 				},
-				SystemFingerprint: "fp-123",
+				SystemFingerprint: func(s string) *string { return &s }("fp-123"),
 			},
 		},
 		{
@@ -149,7 +149,7 @@ func TestHandleChatCompletionResponse(t *testing.T) {
 				Body:       io.NopCloser(bytes.NewReader([]byte{})),
 			},
 			wantErr:     "failed to parse response JSON",
-			errContains: "unexpected end of JSON input",
+			errContains: "empty response body",
 		},
 		{
 			name: "read error",
