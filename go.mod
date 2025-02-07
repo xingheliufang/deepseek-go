@@ -14,7 +14,8 @@ require (
 )
 
 // Retracting v1.1.0 and v1.0.1 because it was
-// a premature release
+// a premature release. Please get the supported version
+// from the releases page.
 retract (
 	v1.1.0
 	v1.0.1
