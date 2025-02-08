@@ -492,6 +492,7 @@ The tests are organized into several files and folders:
 - `models_test.go`: Model listing and retrieval
 - `balance_test.go`: Account balance operations
 - `tokens_test.go`: Token estimation utilities
+- `json_test.go`: JSON mode for extraction
 <!-- - `errors_test.go`: Tests the error handler -->
 ### Handlers Package
 - `handlers/requestHandler_test.go`: Tests for the request handler
@@ -540,7 +541,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Credits
 - **`chat.go` Inspiration**: Adapted from [sashabaranov/go-openai](https://github.com/sashabaranov/go-openai/tree/master).
-- **`json_mode.go` Inspiration**: Thanks a lot for [Mr. Peter](https://github.com/peterlodri92).
+- **`json.go` Inspiration**: Thanks a lot for [Mr. Peter](https://github.com/peterlodri92).
 
 ---
 
