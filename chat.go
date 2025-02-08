@@ -55,4 +55,5 @@ type ChatCompletionRequest struct {
 	Tools            []Tools                 `json:"tools,omitempty"`             // Optional: List of tools
 	LogProbs         bool                    `json:"logprobs,omitempty"`          // Optional: Enable log probabilities
 	TopLogProbs      int                     `json:"top_logprobs,omitempty"`      // Optional: Number of top tokens with log probabilities, <= 20
+	JSONMode         bool                    `json:"json,omitempty"`              // Optional: Enable JSON mode. If you're using the JSON mode, please mention "json" anywhere in your prompt, and also include the JSON schema in the request.
 }
