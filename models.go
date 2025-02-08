@@ -19,8 +19,13 @@ const (
 
 // External Models that can be used with the API
 const (
-	AzureDeepSeekR1      = "DeepSeek-R1"          // Azure model for DeepSeek R1
-	OpenRouterDeepSeekR1 = "deepseek/deepseek-r1" // OpenRouter model for DeepSeek R1
+	AzureDeepSeekR1                     = "DeepSeek-R1"                            // Azure model for DeepSeek R1
+	OpenRouterDeepSeekR1                = "deepseek/deepseek-r1"                   // OpenRouter model for DeepSeek R1
+	OpenRouterDeepSeekR1DistillLlama70B = "deepseek/deepseek-r1-distill-llama-70b" // DeepSeek R1 Distill Llama 70B
+	OpenRouterDeepSeekR1DistillLlama8B  = "deepseek/deepseek-r1-distill-llama-8b"  // DeepSeek R1 Distill Llama 8B
+	OpenRouterDeepSeekR1DistillQwen14B  = "deepseek/deepseek-r1-distill-qwen-14b"  // DeepSeek R1 Distill Qwen 14B
+	OpenRouterDeepSeekR1DistillQwen1_5B = "deepseek/deepseek-r1-distill-qwen-1.5b" // DeepSeek R1 Distill Qwen 1.5B
+	OpenRouterDeepSeekR1DistillQwen32B  = "deepseek/deepseek-r1-distill-qwen-32b"  // DeepSeek R1 Distill Qwen 32B
 )
 
 type Model struct {
