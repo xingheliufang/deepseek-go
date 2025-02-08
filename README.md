@@ -540,6 +540,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Credits
 - **`chat.go` Inspiration**: Adapted from [sashabaranov/go-openai](https://github.com/sashabaranov/go-openai/tree/master).
+- **`json_mode.go` Inspiration**: Thanks a lot for [Mr. Peter](https://github.com/peterlodri92).
 
 ---
 
