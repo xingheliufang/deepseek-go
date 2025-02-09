@@ -98,6 +98,8 @@ func main() {
 ```
 </details>
 
+## More Examples:
+
 <details>
 <summary> Using external providers such as Azure or OpenRouter. </summary>
 
@@ -452,6 +454,33 @@ func JsonMode() {
 ```
 You can see more examples inside the examples folder.
 
+</details>
+
+<details> <summary> Add more settings to your client with NewClientWithOptions </summary>
+
+```go
+package main
+
+import (
+    "fmt"
+    "log"
+    "time"
+    "github.com/cohesion-org/deepseek-go"
+)
+
+func main() {
+    client, err := deepseek.NewClientWithOptions("your-api-key",
+        deepseek.WithBaseURL("https://custom-api.com/"),
+        deepseek.WithTimeout(10*time.Second),
+    )
+    if err != nil {
+        log.Fatalf("Error creating client: %v", err)
+    }
+
+    fmt.Printf("Client initialized with BaseURL: %s and Timeout: %v\n", client.BaseURL, client.Timeout)
+}
+ ```
+See the examples folder for more information.
 </details>
 
 ---
