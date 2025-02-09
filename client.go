@@ -9,25 +9,6 @@ import (
 	utils "github.com/cohesion-org/deepseek-go/utils"
 )
 
-type Client struct {
-	AuthToken string
-	BaseURL   string
-}
-
-// NewClient creates a new client with an authentication token and an optional custom baseURL.
-// If no baseURL is provided, it defaults to "https://api.deepseek.com/".
-func NewClient(AuthToken string, baseURL ...string) *Client {
-	url := "https://api.deepseek.com/"
-	if len(baseURL) > 0 {
-		url = baseURL[0]
-	}
-	return &Client{
-		AuthToken: AuthToken,
-		BaseURL:   url,
-	}
-
-}
-
 // CreateChatCompletion sends a chat completion request and returns the generated response.
 func (c *Client) CreateChatCompletion(
 	ctx context.Context,
