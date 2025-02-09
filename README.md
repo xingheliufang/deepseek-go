@@ -5,9 +5,13 @@
 
 Deepseek-Go is a Go-based API wrapper for the [Deepseek](https://deepseek.com) platform. It provides a clean and type-safe interface to interact with Deepseek's AI features, including chat completions with streaming, token usage tracking, and more.
 
-This library is designed for developers building Go applications that require seamless integration with Deepseek AI.
 
-The recent gain in popularity and cybersecurity issues Deepseek has seen makes for many problems while using the API. Please refer to the [status](https://status.deepseek.com/) page for the current status.
+## Installation
+
+```sh
+go get github.com/cohesion-org/deepseek-go@v0.2.1
+```
+deepseek-go currently uses `go 1.23.3`
 
 ## Features
 
@@ -15,13 +19,7 @@ The recent gain in popularity and cybersecurity issues Deepseek has seen makes f
 - **Modular Design**: The library is structured into reusable components for building, sending, and handling requests and responses.
 - **MIT License**: Open-source and free for both personal and commercial use.
 
-## Installation
-
-To use Deepseek-Go, ensure you have Go installed, and run:
-
-```sh
-go get github.com/cohesion-org/deepseek-go@v0.2.1
-```
+The recent gain in popularity and cybersecurity issues Deepseek has seen makes for many problems while using the API. Please refer to the [status](https://status.deepseek.com/) page for the current status.
 
 ## Getting Started
 
