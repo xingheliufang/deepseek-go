@@ -30,7 +30,7 @@ func HandleAPIError(resp *http.Response) error {
 
 	// Check if the response is HTML
 	if strings.HasPrefix(responseBody, "<html>") {
-		return APIError{
+		return &APIError{
 			StatusCode: resp.StatusCode,
 			Message:    "Unexpected HTML response (model may not exist). This is likely an issue with the how some external servers return html responses for error.",
 		}
@@ -45,7 +45,7 @@ func HandleAPIError(resp *http.Response) error {
 
 	err := json.Unmarshal(body, &apiResponse)
 
-	baseError := APIError{
+	baseError := &APIError{
 		StatusCode:   resp.StatusCode,
 		APICode:      apiResponse.Code,
 		Message:      apiResponse.Message,
