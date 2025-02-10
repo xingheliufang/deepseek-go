@@ -49,7 +49,6 @@ func HandleSendChatCompletionRequest(c Client, req *http.Request) (*http.Respons
 			return nil, fmt.Errorf("error getting timeout: %w", err)
 		}
 	}
-	fmt.Printf("Timeout: %v\n", timeout)
 	client := &http.Client{Timeout: timeout}
 	resp, err := client.Do(req)
 	if err != nil {
