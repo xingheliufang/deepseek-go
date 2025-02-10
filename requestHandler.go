@@ -11,6 +11,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// HandleTimeout gets the timeout duration from the DEEPSEEK_TIMEOUT environment variable.
 func HandleTimeout() (time.Duration, error) {
 	if err := godotenv.Load(); err != nil {
 		_ = err
@@ -27,6 +28,7 @@ func HandleTimeout() (time.Duration, error) {
 	return duration, nil
 }
 
+// checkTimeoutError checks if the error is a timeout error and returns a custom error message.
 func checkTimeoutError(err error, timeout time.Duration) error {
 	var urlErr *url.Error
 	if errors.As(err, &urlErr) && urlErr.Timeout() {
@@ -39,6 +41,7 @@ func checkTimeoutError(err error, timeout time.Duration) error {
 	return nil
 }
 
+// HandleSendChatCompletionRequest sends a request to the DeepSeek API and returns the response.
 func HandleSendChatCompletionRequest(c Client, req *http.Request) (*http.Response, error) {
 	// Check if c.Timeout is already set or not
 	timeout := c.Timeout
@@ -61,6 +64,7 @@ func HandleSendChatCompletionRequest(c Client, req *http.Request) (*http.Respons
 	return resp, nil
 }
 
+// HandleNormalRequest sends a request to the DeepSeek API and returns the response.
 func HandleNormalRequest(c Client, req *http.Request) (*http.Response, error) {
 	// Check if c.Timeout is already set or not
 	timeout := c.Timeout
