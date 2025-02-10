@@ -9,7 +9,7 @@ Deepseek-Go is a Go-based API wrapper for the [Deepseek](https://deepseek.com) p
 ## Installation
 
 ```sh
-go get github.com/cohesion-org/deepseek-go@v0.2.1
+go get github.com/cohesion-org/deepseek-go
 ```
 deepseek-go currently uses `go 1.23.3`
 
