@@ -5,7 +5,6 @@ import (
 	"context"
 	"fmt"
 
-	handlers "github.com/cohesion-org/deepseek-go/handlers"
 	utils "github.com/cohesion-org/deepseek-go/utils"
 )
 
@@ -13,7 +12,7 @@ import (
 func (c *Client) CreateChatCompletion(
 	ctx context.Context,
 	request *ChatCompletionRequest,
-) (*handlers.ChatCompletionResponse, error) {
+) (*ChatCompletionResponse, error) {
 	if request == nil {
 		return nil, fmt.Errorf("request cannot be nil")
 	}
@@ -27,7 +26,7 @@ func (c *Client) CreateChatCompletion(
 	if err != nil {
 		return nil, fmt.Errorf("error building request: %w", err)
 	}
-	resp, err := handlers.HandleSendChatCompletionRequest(req)
+	resp, err := HandleSendChatCompletionRequest(*c, req)
 
 	if err != nil {
 		return nil, fmt.Errorf("error sending request: %w", err)
@@ -38,7 +37,7 @@ func (c *Client) CreateChatCompletion(
 		return nil, HandleAPIError(resp)
 	}
 
-	updatedResp, err := handlers.HandleChatCompletionResponse(resp)
+	updatedResp, err := HandleChatCompletionResponse(resp)
 
 	if err != nil {
 		return nil, fmt.Errorf("error decoding response: %w", err)
@@ -64,7 +63,7 @@ func (c *Client) CreateChatCompletionStream(
 		return nil, fmt.Errorf("error building request: %w", err)
 	}
 
-	resp, err := handlers.HandleSendChatCompletionRequest(req)
+	resp, err := HandleSendChatCompletionRequest(*c, req)
 	if err != nil {
 		return nil, err
 	}

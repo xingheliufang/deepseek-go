@@ -6,7 +6,6 @@ import (
 
 	"github.com/cohesion-org/deepseek-go"
 	"github.com/cohesion-org/deepseek-go/constants"
-	handlers "github.com/cohesion-org/deepseek-go/handlers"
 	"github.com/cohesion-org/deepseek-go/internal/testutil"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -21,7 +20,7 @@ func TestCreateChatCompletion(t *testing.T) {
 		name        string
 		req         *deepseek.ChatCompletionRequest
 		wantErr     bool
-		validateRes func(t *testing.T, res *handlers.ChatCompletionResponse)
+		validateRes func(t *testing.T, res *deepseek.ChatCompletionResponse)
 	}{
 		{
 			name: "basic completion",
@@ -32,7 +31,7 @@ func TestCreateChatCompletion(t *testing.T) {
 				},
 			},
 			wantErr: false,
-			validateRes: func(t *testing.T, res *handlers.ChatCompletionResponse) {
+			validateRes: func(t *testing.T, res *deepseek.ChatCompletionResponse) {
 				assert.NotEmpty(t, res.Choices[0].Message.Content)
 			},
 		},

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 
-	handlers "github.com/cohesion-org/deepseek-go/handlers"
 	utils "github.com/cohesion-org/deepseek-go/utils"
 )
 
@@ -50,7 +49,7 @@ func ListAllModels(c *Client, ctx context.Context) (*APIModels, error) {
 		return nil, fmt.Errorf("error building request: %w", err)
 	}
 
-	resp, err := handlers.HandleNormalRequest(req)
+	resp, err := HandleNormalRequest(*c, req)
 
 	if err != nil {
 		return nil, fmt.Errorf("error sending request: %w", err)

@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-
-	"github.com/cohesion-org/deepseek-go/handlers"
 )
 
 // JSONExtractor helps extract structured data from LLM responses
@@ -22,7 +20,7 @@ func NewJSONExtractor(schema json.RawMessage) *JSONExtractor {
 }
 
 // ExtractJSON attempts to extract and parse JSON from an LLM response
-func (je *JSONExtractor) ExtractJSON(response *handlers.ChatCompletionResponse, target interface{}) error {
+func (je *JSONExtractor) ExtractJSON(response *ChatCompletionResponse, target interface{}) error {
 	if response == nil {
 		return fmt.Errorf("response cannot be nil")
 	}

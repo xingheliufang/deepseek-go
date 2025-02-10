@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/cohesion-org/deepseek-go/handlers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -20,7 +19,7 @@ func TestNewJSONExtractor(t *testing.T) {
 func TestExtractJSON(t *testing.T) {
 	tests := []struct {
 		name        string
-		response    *handlers.ChatCompletionResponse
+		response    *ChatCompletionResponse
 		schema      json.RawMessage
 		target      interface{}
 		expectError bool
@@ -35,8 +34,8 @@ func TestExtractJSON(t *testing.T) {
 		},
 		{
 			name: "Empty Choices",
-			response: &handlers.ChatCompletionResponse{
-				Choices: []handlers.Choice{},
+			response: &ChatCompletionResponse{
+				Choices: []Choice{},
 			},
 			schema:      nil,
 			target:      &struct{}{},
@@ -44,10 +43,10 @@ func TestExtractJSON(t *testing.T) {
 		},
 		{
 			name: "Valid JSON Response",
-			response: &handlers.ChatCompletionResponse{
-				Choices: []handlers.Choice{
+			response: &ChatCompletionResponse{
+				Choices: []Choice{
 					{
-						Message: handlers.Message{
+						Message: Message{
 							Content: `{"name": "test"}`,
 						},
 					},
@@ -278,10 +277,10 @@ func TestJSONExtractionEdgeCases(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			response := &handlers.ChatCompletionResponse{
-				Choices: []handlers.Choice{
+			response := &ChatCompletionResponse{
+				Choices: []Choice{
 					{
-						Message: handlers.Message{
+						Message: Message{
 							Content: tt.content,
 						},
 					},
