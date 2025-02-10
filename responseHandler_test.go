@@ -192,42 +192,41 @@ func (r *errorReader) Read(p []byte) (int, error) {
 	return 0, r.err
 }
 
-//add this in future?
-// func TestResponseStructureValidation(t *testing.T) {
-// 	t.Run("missing required fields", func(t *testing.T) {
-// 		resp := &http.Response{
-// 			StatusCode: http.StatusOK,
-// 			Body: io.NopCloser(bytes.NewReader([]byte(`{
-// 				"created": 1677858242,
-// 				"choices": [{}]
-// 			}`))),
-// 		}
-// 		defer resp.Body.Close()
+func TestResponseStructureValidation(t *testing.T) {
+	t.Run("missing required fields", func(t *testing.T) {
+		resp := &http.Response{
+			StatusCode: http.StatusOK,
+			Body: io.NopCloser(bytes.NewReader([]byte(`{
+				"created": 1677858242,
+				"choices": [{}]
+			}`))),
+		}
+		defer resp.Body.Close()
 
-// 		_, err := deepseek.HandleChatCompletionResponse(resp)
-// 		require.Error(t, err)
-// 		assert.Contains(t, err.Error(), "failed to parse response JSON")
-// 	})
+		_, err := deepseek.HandleChatCompletionResponse(resp)
+		require.Error(t, err)
+		assert.Contains(t, err.Error(), "invalid response")
+	})
 
-// 	t.Run("unexpected field types", func(t *testing.T) {
-// 		resp := &http.Response{
-// 			StatusCode: http.StatusOK,
-// 			Body: io.NopCloser(bytes.NewReader([]byte(`{
-// 				"id": 123,
-// 				"object": "chat.completion",
-// 				"created": "invalid",
-// 				"model": "deepseek-chat",
-// 				"choices": [{"index": "zero"}],
-// 				"usage": {"prompt_tokens": "ten"}
-// 			}`))),
-// 		}
-// 		defer resp.Body.Close()
+	t.Run("unexpected field types", func(t *testing.T) {
+		resp := &http.Response{
+			StatusCode: http.StatusOK,
+			Body: io.NopCloser(bytes.NewReader([]byte(`{
+				"id": 123,
+				"object": "chat.completion",
+				"created": "invalid",
+				"model": "deepseek-chat",
+				"choices": [{"index": "zero"}],
+				"usage": {"prompt_tokens": "ten"}
+			}`))),
+		}
+		defer resp.Body.Close()
 
-// 		_, err := deepseek.HandleChatCompletionResponse(resp)
-// 		require.Error(t, err)
-// 		assert.Contains(t, err.Error(), "failed to parse response JSON")
-// 	})
-// }
+		_, err := deepseek.HandleChatCompletionResponse(resp)
+		require.Error(t, err)
+		assert.Contains(t, err.Error(), "failed to parse response JSON")
+	})
+}
 
 func TestErrorWrapping(t *testing.T) {
 	t.Run("read error wrapping", func(t *testing.T) {
