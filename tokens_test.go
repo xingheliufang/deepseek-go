@@ -93,12 +93,12 @@ func TestEstimateTokensFromMessages(t *testing.T) {
 						Content: "Get weather",
 					},
 				},
-				Tools: []deepseek.Tools{
+				Tools: []deepseek.Tool{
 					{
 						Function: deepseek.Function{
 							Name:        "get_weather",
 							Description: "Get weather information",
-							Parameters: &deepseek.Parameters{
+							Parameters: &deepseek.FunctionParameters{
 								Type: "object",
 								Properties: map[string]interface{}{
 									"location": "string",
