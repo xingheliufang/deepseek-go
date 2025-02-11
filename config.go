@@ -3,6 +3,7 @@ package deepseek
 import (
 	"fmt"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -13,6 +14,7 @@ type HTTPDoer interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
+// Client is the main struct for interacting with the Deepseek API.
 type Client struct {
 	AuthToken string        // The authentication token for the API
 	BaseURL   string        // The base URL for the API
@@ -24,6 +26,14 @@ type Client struct {
 func NewClient(AuthToken string, baseURL ...string) *Client {
 	if AuthToken == "" {
 		return nil
+	}
+	// check if this is a valid URL
+	if len(baseURL) > 0 {
+		_, err := url.ParseRequestURI(baseURL[0])
+		if err != nil {
+			fmt.Printf("Invalid URL: %s. \nIf you are using options please use NewClientWithOptions", baseURL[0])
+			return nil
+		}
 	}
 	url := "https://api.deepseek.com/"
 	if len(baseURL) > 0 {
