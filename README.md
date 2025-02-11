@@ -481,6 +481,41 @@ func main() {
 See the examples folder for more information.
 </details>
 
+<details> 
+<summary> FIM Mode(Beta) </summary>
+
+In FIM (Fill In the Middle) completion, users can provide a prefix and a suffix (optional), and the model will complete the content in between. FIM is commonly used for content completion、code completion.
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"os"
+
+	deepseek "github.com/cohesion-org/deepseek-go"
+)
+
+func FIM() {
+	client := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"))
+	request := &deepseek.FIMCompletionRequest{
+		Model:  deepseek.DeepSeekChat,
+		Prompt: "def add(a, b):",
+	}
+	ctx := context.Background()
+	response, err := client.CreateFIMCompletion(ctx, request)
+	if err != nil {
+		log.Fatalf("error: %v", err)
+	}
+	fmt.Println("\n", response.Choices[0].Text)
+}
+
+```
+
+</details>
+
 ---
 ## Getting a Deepseek Key
 
