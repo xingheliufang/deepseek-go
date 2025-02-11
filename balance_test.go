@@ -20,7 +20,7 @@ func TestGetBalance(t *testing.T) {
 
 	balance, err := deepseek.GetBalance(client, ctx)
 	require.NoError(t, err, "should not return error")
-	require.NotNil(t, balance, "response should not be nil")
+	require.NotNil(t, balance, "response should not be nil ")
 
 	// Verify response structure
 	assert.True(t, balance.IsAvailable || !balance.IsAvailable, "IsAvailable should be a boolean")

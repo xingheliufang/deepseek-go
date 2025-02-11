@@ -19,6 +19,10 @@ func TestNewCleint(t *testing.T) {
 	client = deepseek.NewClient("test")
 	require.NotNil(t, client)
 
+	//test with a non url as base url
+	client = deepseek.NewClient("test", "invalid-url")
+	require.Nil(t, client)
+
 	//test with base url
 	client = deepseek.NewClient("test", "https://api.deepseek.com/")
 	require.NotNil(t, client)
