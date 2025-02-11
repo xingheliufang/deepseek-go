@@ -9,51 +9,62 @@ var (
 	ErrUnexpectedResponseFormat         = errors.New("unexpected response format")
 )
 
+// ChatCompletionMessage represents a single message in a chat completion conversation.
 type ChatCompletionMessage struct {
-	Role    string `json:"role"`
-	Content string `json:"content"`
+	Role    string `json:"role"`    // The role of the message sender, e.g., "user", "assistant", "system".
+	Content string `json:"content"` // The content of the message.
 }
 
-type StreamOptions struct {
-	IncludeUsage bool
+// FunctionParameters defines the parameters for a function.
+type FunctionParameters struct {
+	Type       string                 `json:"type"`                 // The type of the parameters, e.g., "object" (required).
+	Properties map[string]interface{} `json:"properties,omitempty"` // The properties of the parameters (optional).
+	Required   []string               `json:"required,omitempty"`   // A list of required parameter names (optional).
 }
 
-type Parameters struct {
-	Type       string                 `json:"type"` // Type of the parameters, e.g., "object" (required)
-	Properties map[string]interface{} `json:"properties,omitempty"`
-	Required   []string               `json:"required,omitempty"`
-}
-
-// Function defines the structure of a function tool
+// Function defines the structure of a function tool.
 type Function struct {
-	Name        string      `json:"name"`                 // The name of the function (required)
-	Description string      `json:"description"`          // Description of the function (required)
-	Parameters  *Parameters `json:"parameters,omitempty"` // Parameters schema (optional)
+	Name        string              `json:"name"`                 // The name of the function (required).
+	Description string              `json:"description"`          // A description of the function (required).
+	Parameters  *FunctionParameters `json:"parameters,omitempty"` // The parameters of the function (optional).
 }
 
-// Tool defines the structure for a tool
-type Tools struct {
-	Type     string   `json:"type"`     // Type of the tool, e.g., "function" (required)
-	Function Function `json:"function"` // The function details (required)
+// Tool defines the structure for a tool.
+type Tool struct {
+	Type     string   `json:"type"`     // The type of the tool, e.g., "function" (required).
+	Function Function `json:"function"` // The function details (required).
 }
 
+// ToolChoice defines the structure for a tool choice.
+type ToolChoice struct {
+	Type     string             `json:"type"`               // The type of the tool, e.g., "function" (required).
+	Function ToolChoiceFunction `json:"function,omitempty"` // The function details (optional, but required if type is "function").
+}
+
+// ToolChoiceFunction defines the function details within ToolChoice.
+type ToolChoiceFunction struct {
+	Name string `json:"name"` // The name of the function to call (required).
+}
+
+// ResponseFormat defines the structure for the response format.
 type ResponseFormat struct {
-	Type string `json:"type"` //either text or json_object. If json_object, please mention "json" anywhere in your prompt.
+	Type string `json:"type"` // The desired response format, either "text" or "json_object".
 }
 
-// make a different struct for streaming with streaming options parameter
+// ChatCompletionRequest defines the structure for a chat completion request.
 type ChatCompletionRequest struct {
-	Model            string                  `json:"model"`                       // Required: Model ID, e.g., "deepseek-chat"
-	Messages         []ChatCompletionMessage `json:"messages"`                    // Required: List of messages
-	FrequencyPenalty float32                 `json:"frequency_penalty,omitempty"` // Optional: Frequency penalty, >= -2 and <= 2
-	MaxTokens        int                     `json:"max_tokens,omitempty"`        // Optional: Maximum tokens, > 1
-	PresencePenalty  float32                 `json:"presence_penalty,omitempty"`  // Optional: Presence penalty, >= -2 and <= 2
-	Temperature      float32                 `json:"temperature,omitempty"`       // Optional: Sampling temperature, <= 2
-	TopP             float32                 `json:"top_p,omitempty"`             // Optional: Nucleus sampling parameter, <= 1
-	ResponseFormat   *ResponseFormat         `json:"response_format,omitempty"`   // Optional: Custom response format
-	Stop             []string                `json:"stop,omitempty"`              // Optional: Stop signals
-	Tools            []Tools                 `json:"tools,omitempty"`             // Optional: List of tools
-	LogProbs         bool                    `json:"logprobs,omitempty"`          // Optional: Enable log probabilities
-	TopLogProbs      int                     `json:"top_logprobs,omitempty"`      // Optional: Number of top tokens with log probabilities, <= 20
-	JSONMode         bool                    `json:"json,omitempty"`              // Optional: Enable JSON mode. If you're using the JSON mode, please mention "json" anywhere in your prompt, and also include the JSON schema in the request.
+	Model            string                  `json:"model"`                       // The ID of the model to use (required).
+	Messages         []ChatCompletionMessage `json:"messages"`                    // A list of messages comprising the conversation (required).
+	FrequencyPenalty float32                 `json:"frequency_penalty,omitempty"` // Penalty for new tokens based on their frequency in the text so far (optional).
+	MaxTokens        int                     `json:"max_tokens,omitempty"`        // The maximum number of tokens to generate in the chat completion (optional).
+	PresencePenalty  float32                 `json:"presence_penalty,omitempty"`  // Penalty for new tokens based on their presence in the text so far (optional).
+	Temperature      float32                 `json:"temperature,omitempty"`       // The sampling temperature, between 0 and 2 (optional).
+	TopP             float32                 `json:"top_p,omitempty"`             // The nucleus sampling parameter, between 0 and 1 (optional).
+	ResponseFormat   *ResponseFormat         `json:"response_format,omitempty"`   // The desired response format (optional).
+	Stop             []string                `json:"stop,omitempty"`              // A list of sequences where the model should stop generating further tokens (optional).
+	Tools            []Tool                  `json:"tools,omitempty"`             // A list of tools the model may use (optional).
+	ToolChoice       interface{}             `json:"tool_choice,omitempty"`       // Controls which (if any) tool is called by the model (optional).
+	LogProbs         bool                    `json:"logprobs,omitempty"`          // Whether to return log probabilities of the most likely tokens (optional).
+	TopLogProbs      int                     `json:"top_logprobs,omitempty"`      // The number of top most likely tokens to return log probabilities for (optional).
+	JSONMode         bool                    `json:"json,omitempty"`              // [deepseek-go feature] Optional: Enable JSON mode. If you're using the JSON mode, please mention "json" anywhere in your prompt, and also include the JSON schema in the request.
 }
