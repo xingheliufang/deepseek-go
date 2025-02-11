@@ -3,7 +3,7 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) 
 [![Go Report Card](https://goreportcard.com/badge/github.com/cohesion-org/deepseek-go)](https://goreportcard.com/report/github.com/cohesion-org/deepseek-go)
 
-Deepseek-Go is a Go-based API wrapper for the [Deepseek](https://deepseek.com) platform. It provides a clean and type-safe interface to interact with Deepseek's AI features, including chat completions with streaming, token usage tracking, and more.
+Deepseek-Go is a Go-based API client for the [Deepseek](https://deepseek.com) platform. It provides a clean and type-safe interface to interact with Deepseek's AI features, including chat completions with streaming, token usage tracking, and more.
 
 
 ## Installation
@@ -548,17 +548,17 @@ To use the Deepseek API, you need an API key. You can obtain one by signing up o
 The tests are organized into several files and folders:
 
 ### Main Package
-<!-- - `client_test.go`: Client configuration and error handling -->
+- `client_test.go`: Client configuration and error handling
 - `chat_test.go`: Chat completion functionality 
 - `chat_stream_test.go`: Chat streaming functionality
 - `models_test.go`: Model listing and retrieval
 - `balance_test.go`: Account balance operations
 - `tokens_test.go`: Token estimation utilities
 - `json_test.go`: JSON mode for extraction
+- `fim_test.go`: Tests for the FIM beta implementation
 <!-- - `errors_test.go`: Tests the error handler -->
-### Handlers Package
-- `handlers/requestHandler_test.go`: Tests for the request handler
-- `handlers/responseHandler_test.go`: Tests for the response handler
+- `requestHandler_test.go`: Tests for the request handler
+- `responseHandler_test.go`: Tests for the response handler
 
 ### Utils Package
 - `utils/requestBuilder_test.go`: Tests for the request builder
