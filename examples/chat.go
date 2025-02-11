@@ -11,7 +11,7 @@ import (
 )
 
 func Chat() {
-	client := deepseek.NewClient(os.Getenv("DEEPSEEK_API"))
+	client := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"))
 	request := &deepseek.ChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
