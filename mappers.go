@@ -12,6 +12,7 @@ var validRoles = map[string]bool{
 	constants.ChatMessageRoleSystem:    true,
 }
 
+// MapMessageToChatCompletionMessage maps a Message to a ChatCompletionMessage
 func MapMessageToChatCompletionMessage(m Message) (ChatCompletionMessage, error) {
 	if m.Role == "" {
 		return ChatCompletionMessage{}, errors.New("message role cannot be empty")

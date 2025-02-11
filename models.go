@@ -27,12 +27,14 @@ const (
 	OpenRouterDeepSeekR1DistillQwen32B  = "deepseek/deepseek-r1-distill-qwen-32b"  // DeepSeek R1 Distill Qwen 32B
 )
 
+// Model represents a model that can be used with the API
 type Model struct {
 	ID      string `json:"id"`       //The id of the model (string)
 	Object  string `json:"object"`   //The object of the model (string)
 	OwnedBy string `json:"owned_by"` //The owner of the model(usally deepseek)
 }
 
+// APIModels represents the response from the API endpoint.
 type APIModels struct {
 	Object string  `json:"object"` //Object (string)
 	Data   []Model `json:"data"`   // List of Models

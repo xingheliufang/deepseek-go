@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// Builder pattern
+// AuthedRequest represents an authenticated HTTP request.
 type AuthedRequest struct {
 	AuthToken string
 	BaseURL   string
@@ -16,6 +16,7 @@ type AuthedRequest struct {
 	Body      []byte
 }
 
+// AuthedRequestBuilder is an interface for building authenticated requests.
 type AuthedRequestBuilder interface {
 	SetBaseURL(string) *AuthedRequest
 	SetPath(string) *AuthedRequest
