@@ -1,0 +1,38 @@
+package deepseek_examples
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"io"
+	"log"
+
+	deepseek "github.com/cohesion-org/deepseek-go"
+)
+
+func FIMStream() {
+	client := deepseek.NewClient("DEEPSEEK_API_KEY")
+	request := &deepseek.FIMStreamCompletionRequest{
+		Model:  deepseek.DeepSeekChat,
+		Prompt: "def add(a, b): ",
+		Stream: true,
+	}
+	ctx := context.Background()
+	stream, err := client.CreateFIMStreamCompletion(ctx, request)
+	if err != nil {
+		log.Fatalf("FIMCompletionStream error: %v", err)
+	}
+	defer stream.FIMClose()
+	for {
+		response, err := stream.FIMRecv()
+		if errors.Is(err, io.EOF) {
+			fmt.Println("\nStream finished")
+			break
+		}
+		if err != nil {
+			fmt.Printf("\nStream error: %v\n", err)
+			break
+		}
+		log.Printf("%v", response.Choices[0].Text)
+	}
+}
