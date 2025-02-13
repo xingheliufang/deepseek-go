@@ -124,7 +124,7 @@ func (c *Client) CreateFIMCompletion(
 func (c *Client) CreateFIMStreamCompletion(
 	ctx context.Context,
 	request *FIMStreamCompletionRequest,
-) (ChatCompletionStream, error) {
+) (FIMChatCompletionStream, error) {
 	baseURL := "https://api.deepseek.com/beta/"
 
 	request.Stream = true
@@ -148,7 +148,7 @@ func (c *Client) CreateFIMStreamCompletion(
 	}
 
 	ctx, cancel := context.WithCancel(ctx)
-	stream := &chatCompletionStream{
+	stream := &fimCompletionStream{
 		ctx:    ctx,
 		cancel: cancel,
 		resp:   resp,
