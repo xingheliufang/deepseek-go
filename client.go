@@ -120,7 +120,6 @@ func (c *Client) CreateFIMCompletion(
 }
 
 // CreateFIMStreamCompletion sends a FIM completion request with stream = true and returns the delta
-// Does not work as of now because the API doesn't return a stream delta.
 func (c *Client) CreateFIMStreamCompletion(
 	ctx context.Context,
 	request *FIMStreamCompletionRequest,
