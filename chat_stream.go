@@ -51,8 +51,9 @@ type StreamDelta struct {
 // StreamChoices represents a choice in the chat completion stream.
 type StreamChoices struct {
 	Index        int         `json:"index"` // Index of the choice.
-	Delta        StreamDelta // Delta information.
-	FinishReason string      `json:"finish_reason"` // Reason for finishing the generation.
+	Delta        StreamDelta // Delta information for the choice.
+	FinishReason string      `json:"finish_reason,omitempty"` // Reason for finishing the generation.
+	Logprobs     Logprobs    `json:"logprobs,omitempty"`      // Log probabilities for the generated tokens.
 }
 
 // StreamChatCompletionResponse represents a single response from a streaming chat completion API call.
