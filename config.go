@@ -7,9 +7,10 @@ import (
 	"time"
 )
 
+// BaseURL is the base URL for the Deepseek API
 const BaseURL string = "https://api.deepseek.com/v1"
 
-type APIType string
+// HTTPDoer is an interface for the Do method of http.Client
 type HTTPDoer interface {
 	Do(req *http.Request) (*http.Response, error)
 }
@@ -48,7 +49,7 @@ func NewClient(AuthToken string, baseURL ...string) *Client {
 // Option configures a Client instance
 type Option func(*Client) error
 
-// NewClient creates a new client with required authentication token and optional configurations.
+// NewClientWithOptions creates a new client with required authentication token and optional configurations.
 // Defaults:
 // - BaseURL: "https://api.deepseek.com/"
 // - Timeout: 5 minutes
