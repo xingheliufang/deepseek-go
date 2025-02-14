@@ -5,14 +5,17 @@ import (
 )
 
 var (
+	// ErrChatCompletionStreamNotSupported is returned when streaming is not supported with the method.
 	ErrChatCompletionStreamNotSupported = errors.New("streaming is not supported with this method")
-	ErrUnexpectedResponseFormat         = errors.New("unexpected response format")
+	// ErrChatCompletionRequestNil is returned when the request is nil.
+	ErrUnexpectedResponseFormat = errors.New("unexpected response format")
 )
 
 // ChatCompletionMessage represents a single message in a chat completion conversation.
 type ChatCompletionMessage struct {
-	Role    string `json:"role"`    // The role of the message sender, e.g., "user", "assistant", "system".
-	Content string `json:"content"` // The content of the message.
+	Role    string `json:"role"`             // The role of the message sender, e.g., "user", "assistant", "system".
+	Content string `json:"content"`          // The content of the message.
+	Prefix  bool   `json:"prefix,omitempty"` // The prefix of the message (optional) [Beta Feature].
 }
 
 // FunctionParameters defines the parameters for a function.
