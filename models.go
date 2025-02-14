@@ -11,9 +11,9 @@ import (
 
 // Official DeepSeek Models
 const (
-	DeepSeekChat     = "deepseek-chat"
-	DeepSeekCoder    = "deepseek-coder" // not sure if this exists anymore
-	DeepSeekReasoner = "deepseek-reasoner"
+	DeepSeekChat     = "deepseek-chat"     // DeepSeekChat is the official model for chat completions
+	DeepSeekCoder    = "deepseek-coder"    // DeepSeekCoder has been combined with DeepSeekChat, but you can still use it. Please read: https://api-docs.deepseek.com/updates#version-2024-09-05
+	DeepSeekReasoner = "deepseek-reasoner" // DeepSeekReasoner is the official model for reasoning completions
 )
 
 // External Models that can be used with the API
@@ -31,16 +31,16 @@ const (
 type Model struct {
 	ID      string `json:"id"`       //The id of the model (string)
 	Object  string `json:"object"`   //The object of the model (string)
-	OwnedBy string `json:"owned_by"` //The owner of the model(usally deepseek)
+	OwnedBy string `json:"owned_by"` //The owner of the model(usually deepseek)
 }
 
 // APIModels represents the response from the API endpoint.
 type APIModels struct {
-	Object string  `json:"object"` //Object (string)
+	Object string  `json:"object"` // Object (string)
 	Data   []Model `json:"data"`   // List of Models
 }
 
-// Models supported by the API itself
+// ListAllModels sends a request to the API to get all available models.
 func ListAllModels(c *Client, ctx context.Context) (*APIModels, error) {
 	req, err := utils.NewRequestBuilder(c.AuthToken).
 		SetBaseURL("https://api.deepseek.com/").
