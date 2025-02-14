@@ -1,4 +1,4 @@
-package Utils
+package utils
 
 import (
 	"bytes"
@@ -44,7 +44,6 @@ func (rb *AuthedRequest) SetPath(path string) *AuthedRequest {
 }
 
 // SetBodyFromStruct sets the request body from a struct, marshaling it to JSON.
-
 // transform interface to ChatCompletionRequest
 func (rb *AuthedRequest) SetBodyFromStruct(data interface{}) *AuthedRequest {
 	body, err := json.Marshal(data)
@@ -72,7 +71,7 @@ func (rb *AuthedRequest) Build(ctx context.Context) (*http.Request, error) {
 	return req, nil
 }
 
-// Build constructs the HTTP request [Method:Post].
+// BuildStream constructs the HTTP request for a streaming response [Method:Post].
 func (rb *AuthedRequest) BuildStream(ctx context.Context) (*http.Request, error) {
 	if rb.BaseURL == "" || rb.Path == "" {
 		return nil, fmt.Errorf("BaseURL or path not set")
@@ -89,7 +88,7 @@ func (rb *AuthedRequest) BuildStream(ctx context.Context) (*http.Request, error)
 	return req, nil
 }
 
-// Build constructs the HTTP request [Method:Get].
+// BuildGet constructs the HTTP request [Method:Get].
 func (rb *AuthedRequest) BuildGet(ctx context.Context) (*http.Request, error) {
 	if rb.BaseURL == "" || rb.Path == "" {
 		return nil, fmt.Errorf("BaseURL or path not set")

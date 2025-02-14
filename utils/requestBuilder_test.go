@@ -1,4 +1,4 @@
-package Utils_test
+package utils_test
 
 import (
 	"bytes"
