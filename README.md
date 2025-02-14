@@ -516,6 +516,50 @@ func FIM() {
 
 </details>
 
+<details> 
+<summary> Chat Prefix Completion (Beta)</summary>
+The chat prefix completion follows the [Chat Completion API](https://api-docs.deepseek.com/guides/chat_prefix_completion), where users provide an assistant's prefix message for the model to complete the rest of the message.
+
+```go
+
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	deepseek "github.com/cohesion-org/deepseek-go"
+	"github.com/cohesion-org/deepseek-go/constants"
+)
+
+func ChatPrefix() {
+	client := deepseek.NewClient(
+		"sk-5b448a2a7fa24b168e4d87884c1df59e",
+		"https://api.deepseek.com/beta/") // Use the beta endpoint
+
+	ctx := context.Background()
+
+	request := &deepseek.ChatCompletionRequest{
+		Model: deepseek.DeepSeekChat,
+		Messages: []deepseek.ChatCompletionMessage{
+			{Role: constants.ChatMessageRoleUser, Content: "Please write quick sort code"},
+			{Role: constants.ChatMessageRoleAssistant, Content: "```python", Prefix: true},
+		},
+		Stop: []string{"```"}, // Stop the prefix when the assistant sends the closing triple backticks
+	}
+	response, err := client.CreateChatCompletion(ctx, request)
+	if err != nil {
+		log.Fatalf("error: %v", err)
+	}
+	fmt.Println(response.Choices[0].Message.Content)
+
+}
+
+```
+See more examples in the examples folder.
+</details>
+
 ---
 ## Getting a Deepseek Key
 
