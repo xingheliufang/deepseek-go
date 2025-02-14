@@ -46,7 +46,7 @@ func (c *Client) CreateChatCompletion(
 	return updatedResp, err
 }
 
-// CreateStreamChatCompletion send a chat completion request with stream = true and returns the delta
+// CreateChatCompletionStream sends a chat completion request with stream = true and returns the delta
 func (c *Client) CreateChatCompletionStream(
 	ctx context.Context,
 	request *StreamChatCompletionRequest,
