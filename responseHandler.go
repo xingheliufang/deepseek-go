@@ -96,7 +96,7 @@ func HandleChatCompletionResponse(resp *http.Response) (*ChatCompletionResponse,
 	return &parsedResponse, nil
 }
 
-// HandelFIMCompletionRequest parses the response from the FIM completion endpoint.
+// HandleFIMCompletionRequest parses the response from the FIM completion endpoint.
 func HandleFIMCompletionRequest(resp *http.Response) (*FIMCompletionResponse, error) {
 	body, err := io.ReadAll(resp.Body) //Do not re read the body hereafter.
 	if err != nil {
