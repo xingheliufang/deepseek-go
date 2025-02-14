@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// APIError represents an error returned by the API.
 type APIError struct {
 	StatusCode    int    // HTTP status code
 	APICode       int    // Business error code from API response
@@ -16,12 +17,15 @@ type APIError struct {
 	ResponseBody  string // Raw JSON response body
 }
 
+// Error returns a string representation of the error.
 func (e APIError) Error() string {
 	if e.APICode != 0 {
 		return fmt.Sprintf("HTTP %d (Code %d): %s", e.StatusCode, e.APICode, e.Message)
 	}
 	return fmt.Sprintf("HTTP %d: %s \n%v", e.StatusCode, e.Message, e.ResponseBody)
 }
+
+// HandleAPIError handles an error response from the API.
 func HandleAPIError(resp *http.Response) error {
 	defer func() { _ = resp.Body.Close() }()
 
