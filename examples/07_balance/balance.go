@@ -8,6 +8,7 @@ import (
 	deepseek "github.com/cohesion-org/deepseek-go"
 )
 
+// Balance demonstrates how to get the balance of your account.
 func Balance() {
 	client := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"))
 	ctx := context.Background()

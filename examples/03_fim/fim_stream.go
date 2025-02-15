@@ -10,6 +10,7 @@ import (
 	deepseek "github.com/cohesion-org/deepseek-go"
 )
 
+// FIMStream demonstrates how to use the FIMStream API for FIM completion.
 func FIMStream() {
 	client := deepseek.NewClient("DEEPSEEK_API_KEY")
 	request := &deepseek.FIMStreamCompletionRequest{

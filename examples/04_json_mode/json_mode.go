@@ -10,6 +10,7 @@ import (
 	"github.com/cohesion-org/deepseek-go/constants"
 )
 
+// JsonMode is a client specific feature that demonstrates how to use the JSON mode for chat completion.
 func JsonMode() {
 	// Book represents a book in a library
 	type Book struct {
@@ -68,6 +69,7 @@ func JsonMode() {
 
 }
 
+// JsonModeWithSchema is a client specific feature that demonstrates how to use the JSON mode for chat completion with a schema.
 func JsonModeWithSchema() {
 	// Book represents a book in a library
 	type Book struct {

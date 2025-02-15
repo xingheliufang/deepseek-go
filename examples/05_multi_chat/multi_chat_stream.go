@@ -10,6 +10,7 @@ import (
 	constants "github.com/cohesion-org/deepseek-go/constants"
 )
 
+// MultiChatStream demonstrates how to use the ChatStream API for multi-turn chat completion.
 func MultiChatStream() {
 	client := deepseek.NewClient("DEEPSEEK_API_KEY")
 	ctx := context.Background()

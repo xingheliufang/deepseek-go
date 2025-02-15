@@ -12,6 +12,7 @@ import (
 	"github.com/cohesion-org/deepseek-go/constants"
 )
 
+// Streaming function demonstrates how to use the streaming feature of the DeepSeek API for chat completion.
 func Streaming() {
 	client := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"))
 	request := &deepseek.StreamChatCompletionRequest{
@@ -47,7 +48,7 @@ func Streaming() {
 	log.Println("The full message is: ", fullMessage)
 }
 
-// streaing with ReasoningContent
+// StreamingWithReasoningContent function demonstrates how to use the streaming feature of the DeepSeek API for chat completion with reasoning content (R1 Model).
 func StreamingWithReasoningContent() {
 	client := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"))
 	request := &deepseek.StreamChatCompletionRequest{

@@ -11,7 +11,8 @@ import (
 	"github.com/cohesion-org/deepseek-go/constants"
 )
 
-func Multi_Chat() {
+// BadMultiChat shows an outdated way of creating a multi-chat completion
+func BadMultiChat() {
 	client := deepseek.NewClient("DEEPSEEK_API_KEY")
 	ctx := context.Background()
 

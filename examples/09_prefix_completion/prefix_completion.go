@@ -12,6 +12,7 @@ import (
 	"github.com/cohesion-org/deepseek-go/constants"
 )
 
+// ChatPrefix demonstrates how to use the Chat API for Chat completion with a prefix.
 func ChatPrefix() {
 	client := deepseek.NewClient(
 		os.Getenv("DEEPSEEK_API_KEY"),
@@ -35,6 +36,7 @@ func ChatPrefix() {
 
 }
 
+// ChatPrefixWithJsonMode demonstrates how to use the Chat API for Chat completion with a prefix and JSON mode.
 func ChatPrefixWithJsonMode() {
 	// Book represents a book in a library
 	type Book struct {

@@ -8,6 +8,7 @@ import (
 	"github.com/cohesion-org/deepseek-go"
 )
 
+// NewClientWithOptions demonstrates how to create a new client with custom options.
 func NewClientWithOptions() {
 	// Initialize client with a custom BaseURL and Timeout
 	client1, err := deepseek.NewClientWithOptions("your-api-key",

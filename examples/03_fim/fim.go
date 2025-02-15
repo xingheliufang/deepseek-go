@@ -9,6 +9,7 @@ import (
 	deepseek "github.com/cohesion-org/deepseek-go"
 )
 
+// FIM demonstrates how to use the FIM API for FIM completion.
 func FIM() {
 	client := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"))
 	request := &deepseek.FIMCompletionRequest{
