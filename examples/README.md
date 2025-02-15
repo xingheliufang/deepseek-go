@@ -1,0 +1,44 @@
+# Examples
+
+This directory contains various examples demonstrating different capabilities of the deepseek-go library.
+
+## Example List
+
+0. **[Using External Providers](00_external_providers/chat.go)** <br>
+    `deepseek-go` also supports external providers through baseURL extension. <br>
+    Also, if you think we are missing any constants for common models, please create an issue or a pull request.
+
+1. **[Basic Chat Example](01_chat/chat.go)**  
+   Demonstrates basic chat functionality.
+
+2. **[Chat with Streaming](02_chat_stream/chat_stream.go)**  
+   Shows how to implement streaming chat responses. <br>
+   Also, it includes implementation for using `ReasoningContent` with R1.
+
+3. **[Fill-in-Middle (FIM)](03_fim/fim.go)**  
+   Example of fill-in-middle completion with streaming support.
+
+4. **[JSON Mode](04_json_mode/json_mode.go)**  
+   Demonstrates using JSON mode for structured responses. <br>
+   This is a client specific feature.
+
+5. **[Multi-Chat](05_multi_chat/multi_chat.go)**  
+   Example of handling multiple concurrent chat sessions.
+
+6. **[Bad Multi-Chat](06_bad_multi_chat/bad_multi_chat.go)**  
+   Demonstrates incorrect handling of multiple chats (for educational purposes).
+
+7. **[Balance Example](07_balance/balance.go)**  
+   Shows balance-related functionality.
+
+8. **[Client with Options](08_newClientWithOptions/newClientWithOptions.go)**  
+   Demonstrates creating a client with custom options.
+
+9. **[Prefix Completion](09_prefix_completion/prefix_completion.go)**  
+   Example of prefix-based completion.
+
+10. **[Token Usage Estimation](10_token_usage/token_usage.go)**  
+   Demonstrates how to estimate and track token usage for requests. This is just an estimation based from deepseek's documentation.
+
+11. **[List Supported Models](11_list_models/list_models.go)**  
+   Shows how to list all supported models through the Deepseek API.
