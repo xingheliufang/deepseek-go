@@ -652,6 +652,13 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 ## Images
-![Image2](internal/images/deepseek-go.png) ![Image1](internal/images/deepseek-go-big.png) 
+
+<div style="display:flex; justify-content: space-between; margin:20px;">
+  <img src="internal/images/deepseek-go-big.png" alt="Deepseek Go Big Logo" style="border-radius:2%;"
+  height=250px>
+  <img src="internal/images/deepseek-go.png" alt="Deepseek Go Logo" style="scale: 90%; border-radius:100%"
+  height=250px>
+
+</div>
 
 Feel free to contribute, open issues, or submit PRs to help improve Deepseek-Go! Let us know if you encounter any issues.
