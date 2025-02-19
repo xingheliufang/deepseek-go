@@ -6,8 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/cohesion-org/deepseek-go"
-	"github.com/cohesion-org/deepseek-go/constants"
+	deepseek "github.com/cohesion-org/deepseek-go"
 )
 
 // JsonMode is a client specific feature that demonstrates how to use the JSON mode for chat completion.
@@ -39,7 +38,7 @@ func JsonMode() {
 	resp, err := client.CreateChatCompletion(ctx, &deepseek.ChatCompletionRequest{
 		Model: "mistralai/codestral-2501", // Or another suitable model
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleUser, Content: prompt},
+			{Role: deepseek.ChatMessageRoleUser, Content: prompt},
 		},
 		JSONMode: true,
 	})
@@ -98,7 +97,7 @@ Example: {"isbn": "978-0321765723", "title": "The Lord of the Rings", "author": 
 	resp, err := client.CreateChatCompletion(ctx, &deepseek.ChatCompletionRequest{
 		Model: "mistralai/codestral-2501", // Or another suitable model
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleUser, Content: prompt},
+			{Role: deepseek.ChatMessageRoleUser, Content: prompt},
 		},
 		JSONMode: true,
 	})

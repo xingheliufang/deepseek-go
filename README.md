@@ -67,7 +67,7 @@ import (
 	"os"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
-	constants "github.com/cohesion-org/deepseek-go/constants"
+	
 )
 
 func main() {
@@ -78,8 +78,8 @@ func main() {
 	request := &deepseek.ChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleSystem, Content: "Answer every question using slang."},
-			{Role: constants.ChatMessageRoleUser, Content: "Which is the tallest mountain in the world?"},
+			{Role: deepseek.ChatMessageRoleSystem, Content: "Answer every question using slang."},
+			{Role: deepseek.ChatMessageRoleUser, Content: "Which is the tallest mountain in the world?"},
 		},
 	}
 
@@ -111,7 +111,6 @@ import (
 	"os"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
-	constants "github.com/cohesion-org/deepseek-go/constants"
 )
 
 func main() {
@@ -130,7 +129,7 @@ func main() {
 		Model: deepseek.AzureDeepSeekR1,
 		// Model: deepseek.OpenRouterDeepSeekR1,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleUser, Content: "Which is the tallest mountain in the world?"},
+			{Role: deepseek.ChatMessageRoleUser, Content: "Which is the tallest mountain in the world?"},
 		},
 	}
 
@@ -159,8 +158,8 @@ Note: If you wish to use other providers that are not supported by us, you can s
 	request := &deepseek.ChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleUser, Content: "What is the meaning of deepseek"},
-			{Role: constants.ChatMessageRoleSystem, Content: "Answer every question using slang"},
+			{Role: deepseek.ChatMessageRoleUser, Content: "What is the meaning of deepseek"},
+			{Role: deepseek.ChatMessageRoleSystem, Content: "Answer every question using slang"},
 		},
 		Temperature: 1.0,
 		Stop:        []string{"yo", "hello"},
@@ -183,7 +182,6 @@ import (
 	"log"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
-	"github.com/cohesion-org/deepseek-go/constants"
 )
 
 func MultiChat() {
@@ -191,7 +189,7 @@ func MultiChat() {
 	ctx := context.Background()
 
 	messages := []deepseek.ChatCompletionMessage{{
-		Role:    constants.ChatMessageRoleUser,
+		Role:    deepseek.ChatMessageRoleUser,
 		Content: "Who is the president of the United States? One word response only.",
 	}}
 
@@ -213,7 +211,7 @@ func MultiChat() {
 	log.Printf("The messages after response 1 are: %v", messages)
 	// Round 2: Second API call
 	messages = append(messages, deepseek.ChatCompletionMessage{
-		Role:    constants.ChatMessageRoleUser,
+		Role:    deepseek.ChatMessageRoleUser,
 		Content: "Who was the one in the previous term.",
 	})
 
@@ -253,7 +251,6 @@ import (
 	"os"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
-	constants "github.com/cohesion-org/deepseek-go/constants"
 )
 
 func main() {
@@ -261,7 +258,7 @@ func main() {
 	request := &deepseek.StreamChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleUser, Content: "Just testing if the streaming feature is working or not!"},
+			{Role: deepseek.ChatMessageRoleUser, Content: "Just testing if the streaming feature is working or not!"},
 		},
 		Stream: true,
 	}
@@ -354,8 +351,8 @@ func Estimation() {
 	request := &deepseek.ChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleSystem, Content: "Just respond with the time it might take you to complete this request."},
-			{Role: constants.ChatMessageRoleUser, Content: "The text to evaluate the time is: Who is the greatest singer in the world?"},
+			{Role: deepseek.ChatMessageRoleSystem, Content: "Just respond with the time it might take you to complete this request."},
+			{Role: deepseek.ChatMessageRoleUser, Content: "The text to evaluate the time is: Who is the greatest singer in the world?"},
 		},
 	}
 	ctx := context.Background()
@@ -388,8 +385,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/cohesion-org/deepseek-go"
-	"github.com/cohesion-org/deepseek-go/constants"
+	deepseek "github.com/cohesion-org/deepseek-go"
 )
 
 func JsonMode() {
@@ -420,7 +416,7 @@ func JsonMode() {
 	resp, err := client.CreateChatCompletion(ctx, &deepseek.ChatCompletionRequest{
 		Model: "mistralai/codestral-2501", // Or another suitable model
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleUser, Content: prompt},
+			{Role: deepseek.ChatMessageRoleUser, Content: prompt},
 		},
 		JSONMode: true,
 	})
@@ -530,7 +526,6 @@ import (
 	"log"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
-	"github.com/cohesion-org/deepseek-go/constants"
 )
 
 func ChatPrefix() {
@@ -543,8 +538,8 @@ func ChatPrefix() {
 	request := &deepseek.ChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleUser, Content: "Please write quick sort code"},
-			{Role: constants.ChatMessageRoleAssistant, Content: "```python", Prefix: true},
+			{Role: deepseek.ChatMessageRoleUser, Content: "Please write quick sort code"},
+			{Role: deepseek.ChatMessageRoleAssistant, Content: "```python", Prefix: true},
 		},
 		Stop: []string{"```"}, // Stop the prefix when the assistant sends the closing triple backticks
 	}

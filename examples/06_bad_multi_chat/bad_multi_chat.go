@@ -8,7 +8,6 @@ import (
 	"log"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
-	"github.com/cohesion-org/deepseek-go/constants"
 )
 
 // BadMultiChat shows an outdated way of creating a multi-chat completion
@@ -17,7 +16,7 @@ func BadMultiChat() {
 	ctx := context.Background()
 
 	messages := []deepseek.ChatCompletionMessage{{
-		Role:    constants.ChatMessageRoleUser,
+		Role:    deepseek.ChatMessageRoleUser,
 		Content: "What's the highest mountain in the world? One word response only.",
 	}}
 
@@ -37,7 +36,7 @@ func BadMultiChat() {
 	fmt.Printf("Messages after Round 1: %+v\n", messages)
 
 	messages = append(messages, deepseek.ChatCompletionMessage{
-		Role:    constants.ChatMessageRoleUser,
+		Role:    deepseek.ChatMessageRoleUser,
 		Content: "What is the second?",
 	})
 

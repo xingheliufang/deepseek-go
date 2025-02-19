@@ -9,7 +9,6 @@ import (
 	"os"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
-	"github.com/cohesion-org/deepseek-go/constants"
 )
 
 // Streaming function demonstrates how to use the streaming feature of the DeepSeek API for chat completion.
@@ -18,7 +17,7 @@ func Streaming() {
 	request := &deepseek.StreamChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleUser, Content: "Just testing if the streaming feature is working or not!"},
+			{Role: deepseek.ChatMessageRoleUser, Content: "Just testing if the streaming feature is working or not!"},
 		},
 		Stream: true,
 	}
@@ -54,7 +53,7 @@ func StreamingWithReasoningContent() {
 	request := &deepseek.StreamChatCompletionRequest{
 		Model: deepseek.DeepSeekReasoner,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleUser, Content: "Hello, how are you?"},
+			{Role: deepseek.ChatMessageRoleUser, Content: "Hello, how are you?"},
 		},
 		Stream: true,
 	}
