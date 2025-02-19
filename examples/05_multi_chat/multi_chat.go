@@ -5,7 +5,6 @@ import (
 	"log"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
-	"github.com/cohesion-org/deepseek-go/constants"
 )
 
 func MultiChat() {
@@ -13,7 +12,7 @@ func MultiChat() {
 	ctx := context.Background()
 
 	messages := []deepseek.ChatCompletionMessage{{
-		Role:    constants.ChatMessageRoleUser,
+		Role:    deepseek.ChatMessageRoleUser,
 		Content: "Who is the president of the United States? One word response only.",
 	}}
 
@@ -35,7 +34,7 @@ func MultiChat() {
 	log.Printf("The messages after response 1 are: %v", messages)
 	// Round 2: Second API call
 	messages = append(messages, deepseek.ChatCompletionMessage{
-		Role:    constants.ChatMessageRoleUser,
+		Role:    deepseek.ChatMessageRoleUser,
 		Content: "Who was the one in the previous term.",
 	})
 

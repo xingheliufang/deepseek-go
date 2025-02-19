@@ -7,7 +7,6 @@ import (
 	"os"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
-	"github.com/cohesion-org/deepseek-go/constants"
 )
 
 func Chat() {
@@ -15,8 +14,8 @@ func Chat() {
 	request := &deepseek.ChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleUser, Content: "Which is the tallest mountain in the world?"},
-			{Role: constants.ChatMessageRoleSystem, Content: "Answer every question using slang"},
+			{Role: deepseek.ChatMessageRoleUser, Content: "Which is the tallest mountain in the world?"},
+			{Role: deepseek.ChatMessageRoleSystem, Content: "Answer every question using slang"},
 		},
 	}
 	ctx := context.Background()

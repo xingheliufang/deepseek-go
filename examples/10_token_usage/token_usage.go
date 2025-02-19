@@ -7,7 +7,6 @@ import (
 	"os"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
-	constants "github.com/cohesion-org/deepseek-go/constants"
 )
 
 // EstimateTokens demonstrates how to estimate the tokens used for a request.
@@ -16,7 +15,7 @@ func EstimateTokens() {
 	request := &deepseek.ChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleUser, Content: "The text to evaluate the time is: Who is the greatest singer in the world?"},
+			{Role: deepseek.ChatMessageRoleUser, Content: "The text to evaluate the time is: Who is the greatest singer in the world?"},
 		},
 	}
 	ctx := context.Background()

@@ -7,7 +7,6 @@ import (
 	"log"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
-	constants "github.com/cohesion-org/deepseek-go/constants"
 )
 
 // MultiChatStream demonstrates how to use the ChatStream API for multi-turn chat completion.
@@ -16,7 +15,7 @@ func MultiChatStream() {
 	ctx := context.Background()
 
 	messages := []deepseek.ChatCompletionMessage{{
-		Role:    constants.ChatMessageRoleUser,
+		Role:    deepseek.ChatMessageRoleUser,
 		Content: "What's the highest mountain in the world? One word response only.",
 	}}
 
@@ -28,7 +27,7 @@ func MultiChatStream() {
 
 	// can't use mappers here to append to messages because the response is a stream
 	messages = append(messages, deepseek.ChatCompletionMessage{
-		Role:    constants.ChatMessageRoleAssistant,
+		Role:    deepseek.ChatMessageRoleAssistant,
 		Content: response1,
 	})
 
@@ -36,7 +35,7 @@ func MultiChatStream() {
 
 	// Second round of conversation
 	messages = append(messages, deepseek.ChatCompletionMessage{
-		Role:    constants.ChatMessageRoleUser,
+		Role:    deepseek.ChatMessageRoleUser,
 		Content: "What is the second?",
 	})
 
@@ -46,7 +45,7 @@ func MultiChatStream() {
 	}
 
 	messages = append(messages, deepseek.ChatCompletionMessage{
-		Role:    constants.ChatMessageRoleAssistant,
+		Role:    deepseek.ChatMessageRoleAssistant,
 		Content: response2,
 	})
 

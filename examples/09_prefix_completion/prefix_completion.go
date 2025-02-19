@@ -9,7 +9,6 @@ import (
 	"os"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
-	"github.com/cohesion-org/deepseek-go/constants"
 )
 
 // ChatPrefix demonstrates how to use the Chat API for Chat completion with a prefix.
@@ -23,8 +22,8 @@ func ChatPrefix() {
 	request := &deepseek.ChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleUser, Content: "Please write quick sort code"},
-			{Role: constants.ChatMessageRoleAssistant, Content: "```python\n", Prefix: true},
+			{Role: deepseek.ChatMessageRoleUser, Content: "Please write quick sort code"},
+			{Role: deepseek.ChatMessageRoleAssistant, Content: "```python\n", Prefix: true},
 		},
 		Stop: []string{"```"}, // Stop the prefix when the assistant sends the closing triple backticks
 	}
@@ -65,8 +64,8 @@ func ChatPrefixWithJsonMode() {
 	resp, err := client.CreateChatCompletion(ctx, &deepseek.ChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleUser, Content: prompt},
-			{Role: constants.ChatMessageRoleAssistant, Content: "```json\n", Prefix: true},
+			{Role: deepseek.ChatMessageRoleUser, Content: prompt},
+			{Role: deepseek.ChatMessageRoleAssistant, Content: "```json\n", Prefix: true},
 		},
 		Stop:     []string{"```"}, // Stop the prefix when the assistant sends the closing triple backticks
 		JSONMode: true,

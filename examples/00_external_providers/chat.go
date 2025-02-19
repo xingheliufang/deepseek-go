@@ -7,7 +7,6 @@ import (
 	"os"
 
 	deepseek "github.com/cohesion-org/deepseek-go"
-	constants "github.com/cohesion-org/deepseek-go/constants"
 )
 
 // ExternalProviders demonstrates how to use the Deepseek client with external providers.
@@ -32,7 +31,7 @@ func ExternalProviders() {
 		Model: deepseek.AzureDeepSeekR1,
 		// Model: deepseek.OpenRouterDeepSeekR1,
 		Messages: []deepseek.ChatCompletionMessage{
-			{Role: constants.ChatMessageRoleUser, Content: "Which is the tallest mountain in the world?"},
+			{Role: deepseek.ChatMessageRoleUser, Content: "Which is the tallest mountain in the world?"},
 		},
 	}
 
