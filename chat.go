@@ -2,6 +2,17 @@ package deepseek
 
 import (
 	"errors"
+
+	"github.com/cohesion-org/deepseek-go/constants"
+)
+
+const (
+	// ChatMessageRoleSystem is the role of a system message
+	ChatMessageRoleSystem = constants.ChatMessageRoleSystem
+	// ChatMessageRoleUser is the role of a user message
+	ChatMessageRoleUser = constants.ChatMessageRoleUser
+	// ChatMessageRoleAssistant is the role of an assistant message
+	ChatMessageRoleAssistant = constants.ChatMessageRoleAssistant
 )
 
 var (
