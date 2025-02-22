@@ -19,7 +19,7 @@ func (c *Client) CreateChatCompletion(
 
 	req, err := utils.NewRequestBuilder(c.AuthToken).
 		SetBaseURL(c.BaseURL).
-		SetPath("chat/completions").
+		SetPath(c.Path).
 		SetBodyFromStruct(request).
 		Build(ctx)
 
@@ -55,7 +55,7 @@ func (c *Client) CreateChatCompletionStream(
 	request.Stream = true
 	req, err := utils.NewRequestBuilder(c.AuthToken).
 		SetBaseURL(c.BaseURL).
-		SetPath("chat/completions").
+		SetPath(c.Path).
 		SetBodyFromStruct(request).
 		BuildStream(ctx)
 
@@ -98,7 +98,7 @@ func (c *Client) CreateFIMCompletion(
 	}
 	req, err := utils.NewRequestBuilder(c.AuthToken).
 		SetBaseURL(baseURL).
-		SetPath("completions").
+		SetPath("/completions").
 		SetBodyFromStruct(request).
 		Build(ctx)
 	if err != nil {
@@ -129,7 +129,7 @@ func (c *Client) CreateFIMStreamCompletion(
 	request.Stream = true
 	req, err := utils.NewRequestBuilder(c.AuthToken).
 		SetBaseURL(baseURL).
-		SetPath("/completions").
+		SetPath("/completions"). //Note to maintianer: This is a really bad implementation with manual path insertion. Please create an issue.
 		SetBodyFromStruct(request).
 		BuildStream(ctx)
 
