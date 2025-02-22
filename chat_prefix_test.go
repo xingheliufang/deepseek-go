@@ -2,6 +2,7 @@ package deepseek_test
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"testing"
 
@@ -15,7 +16,11 @@ import (
 func TestChatPrefixCompletion(t *testing.T) {
 	testutil.SkipIfShort(t)
 	config := testutil.LoadTestConfig(t)
-	client := deepseek.NewClient(config.APIKey, "https://api.deepseek.com/beta/")
+	client, _ := deepseek.NewClientWithOptions(config.APIKey,
+		deepseek.WithBaseURL("https://api.deepseek.com/beta/"),
+		deepseek.WithTimeoutString("5m"))
+
+	fmt.Println(client.Path)
 
 	reasoningContent, err := os.ReadFile("utils/reasoningContent.txt")
 	require.NoError(t, err, "failed to read reasoning content file")
