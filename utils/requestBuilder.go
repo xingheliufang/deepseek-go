@@ -39,6 +39,9 @@ func (rb *AuthedRequest) SetBaseURL(BaseURL string) *AuthedRequest {
 
 // SetPath sets the path for the request.
 func (rb *AuthedRequest) SetPath(path string) *AuthedRequest {
+	if path == "" {
+		fmt.Println("path cannot be empty. Please set a path.")
+	}
 	rb.Path = path
 	return rb
 }
