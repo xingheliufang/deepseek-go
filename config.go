@@ -20,10 +20,12 @@ type Client struct {
 	AuthToken string        // The authentication token for the API
 	BaseURL   string        // The base URL for the API
 	Timeout   time.Duration // The timeout for the current Client
+	Path      string        // The path for the API request. Defaults to "chat/completions"
 }
 
 // NewClient creates a new client with an authentication token and an optional custom baseURL.
 // If no baseURL is provided, it defaults to "https://api.deepseek.com/".
+// You can't set path with this method. If you want to set path, use NewClientWithOptions.
 func NewClient(AuthToken string, baseURL ...string) *Client {
 	if AuthToken == "" {
 		return nil
@@ -43,6 +45,7 @@ func NewClient(AuthToken string, baseURL ...string) *Client {
 	return &Client{
 		AuthToken: AuthToken,
 		BaseURL:   url,
+		Path:      "chat/completions",
 	}
 }
 
@@ -58,6 +61,7 @@ func NewClientWithOptions(authToken string, opts ...Option) (*Client, error) {
 		AuthToken: authToken,
 		BaseURL:   "https://api.deepseek.com/",
 		Timeout:   5 * time.Minute,
+		Path:      "chat/completions",
 	}
 
 	for _, opt := range opts {
@@ -97,5 +101,17 @@ func WithTimeoutString(s string) Option {
 			return fmt.Errorf("invalid timeout duration %q: %w", s, err)
 		}
 		return WithTimeout(d)(c)
+	}
+}
+
+// WithPath sets the path for the API request. Defaults to "chat/completions", if not set.
+// Example usages would be "/c/chat/" or any http after the baseURL extension
+func WithPath(path string) Option {
+	if path == "" {
+		path = "chat/completions"
+	}
+	return func(c *Client) error {
+		c.Path = path
+		return nil
 	}
 }
