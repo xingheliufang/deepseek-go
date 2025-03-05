@@ -1,6 +1,7 @@
 package deepseek
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -41,6 +42,19 @@ func checkTimeoutError(err error, timeout time.Duration) error {
 	return nil
 }
 
+func unwrapTimeout(c HTTPDoer) time.Duration {
+	switch v := c.(type) {
+	case *http.Client:
+		return v.Timeout
+
+	case interface{ Timeout() time.Duration }:
+		return v.Timeout()
+
+	default:
+		return 0
+	}
+}
+
 // HandleSendChatCompletionRequest sends a request to the DeepSeek API and returns the response.
 func HandleSendChatCompletionRequest(c Client, req *http.Request) (*http.Response, error) {
 	// Check if c.Timeout is already set or not
@@ -52,7 +66,20 @@ func HandleSendChatCompletionRequest(c Client, req *http.Request) (*http.Respons
 			return nil, fmt.Errorf("error getting timeout: %w", err)
 		}
 	}
-	client := &http.Client{Timeout: timeout}
+
+	client := c.HTTPClient
+	if client == nil {
+		client = http.DefaultClient
+	}
+
+	if timeout > 0 {
+		ctx, cancel := context.WithTimeout(req.Context(), timeout)
+		defer cancel()
+		req = req.WithContext(ctx)
+	} else {
+		timeout = unwrapTimeout(client)
+	}
+
 	resp, err := client.Do(req)
 	if err != nil {
 		if timeoutErr := checkTimeoutError(err, timeout); timeoutErr != nil {
@@ -75,7 +102,20 @@ func HandleNormalRequest(c Client, req *http.Request) (*http.Response, error) {
 			return nil, fmt.Errorf("error getting timeout: %w", err)
 		}
 	}
-	client := &http.Client{Timeout: timeout}
+
+	client := c.HTTPClient
+	if client == nil {
+		client = http.DefaultClient
+	}
+
+	if timeout > 0 {
+		ctx, cancel := context.WithTimeout(req.Context(), timeout)
+		defer cancel()
+		req = req.WithContext(ctx)
+	} else {
+		timeout = unwrapTimeout(client)
+	}
+
 	resp, err := client.Do(req)
 	if err != nil {
 		if timeoutErr := checkTimeoutError(err, timeout); timeoutErr != nil {

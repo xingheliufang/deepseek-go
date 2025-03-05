@@ -21,6 +21,8 @@ type Client struct {
 	BaseURL   string        // The base URL for the API
 	Timeout   time.Duration // The timeout for the current Client
 	Path      string        // The path for the API request. Defaults to "chat/completions"
+
+	HTTPClient HTTPDoer // The HTTP client to send the request and get the response
 }
 
 // NewClient creates a new client with an authentication token and an optional custom baseURL.
@@ -112,6 +114,14 @@ func WithPath(path string) Option {
 	}
 	return func(c *Client) error {
 		c.Path = path
+		return nil
+	}
+}
+
+// WithHTTPClient sets the http client for the API client.
+func WithHTTPClient(httpclient HTTPDoer) Option {
+	return func(c *Client) error {
+		c.HTTPClient = httpclient
 		return nil
 	}
 }
