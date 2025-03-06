@@ -1,10 +1,9 @@
 package deepseek
 
 import (
-	"errors"
+	"context"
 	"fmt"
 	"net/http"
-	"net/url"
 	"os"
 	"time"
 
@@ -12,7 +11,13 @@ import (
 )
 
 // HandleTimeout gets the timeout duration from the DEEPSEEK_TIMEOUT environment variable.
+//
+// (xgfone): Do we need to export the function?
 func HandleTimeout() (time.Duration, error) {
+	return handleTimeout()
+}
+
+func handleTimeout() (time.Duration, error) {
 	if err := godotenv.Load(); err != nil {
 		_ = err
 	}
@@ -28,59 +33,52 @@ func HandleTimeout() (time.Duration, error) {
 	return duration, nil
 }
 
-// checkTimeoutError checks if the error is a timeout error and returns a custom error message.
-func checkTimeoutError(err error, timeout time.Duration) error {
-	var urlErr *url.Error
-	if errors.As(err, &urlErr) && urlErr.Timeout() {
-		return fmt.Errorf(
-			"request timed out after %s. You can increase the timeout by setting the DEEPSEEK_TIMEOUT environment variable. Original error: %w",
-			timeout,
-			err,
-		)
+func getTimeoutContext(ctx context.Context, timeout time.Duration) (
+	context.Context,
+	context.CancelFunc,
+	error,
+) {
+	if timeout <= 0 {
+		// Try to get timeout from environment variable
+		var err error
+		timeout, err = handleTimeout()
+		if err != nil {
+			return nil, nil, fmt.Errorf("error getting timeout from environment: %w", err)
+		}
 	}
-	return nil
+
+	var cancel context.CancelFunc
+	if timeout > 0 {
+		ctx, cancel = context.WithTimeout(ctx, timeout)
+	} else {
+		cancel = func() {}
+	}
+
+	return ctx, cancel, nil
 }
 
 // HandleSendChatCompletionRequest sends a request to the DeepSeek API and returns the response.
+//
+// (xgfone): Do we need to export this function?
 func HandleSendChatCompletionRequest(c Client, req *http.Request) (*http.Response, error) {
-	// Check if c.Timeout is already set or not
-	timeout := c.Timeout
-	if timeout == 0 {
-		var err error
-		timeout, err = HandleTimeout()
-		if err != nil {
-			return nil, fmt.Errorf("error getting timeout: %w", err)
-		}
-	}
-	client := &http.Client{Timeout: timeout}
-	resp, err := client.Do(req)
-	if err != nil {
-		if timeoutErr := checkTimeoutError(err, timeout); timeoutErr != nil {
-			return nil, timeoutErr
-		}
-		return nil, fmt.Errorf("error sending request: %w", err)
-	}
-
-	return resp, nil
+	return c.handleRequest(req)
 }
 
 // HandleNormalRequest sends a request to the DeepSeek API and returns the response.
+//
+// (xgfone): Do we need to export this function?
 func HandleNormalRequest(c Client, req *http.Request) (*http.Response, error) {
-	// Check if c.Timeout is already set or not
-	timeout := c.Timeout
-	if timeout == 0 {
-		var err error
-		timeout, err = HandleTimeout()
-		if err != nil {
-			return nil, fmt.Errorf("error getting timeout: %w", err)
-		}
+	return c.handleRequest(req)
+}
+
+func (c *Client) handleRequest(req *http.Request) (*http.Response, error) {
+	client := c.HTTPClient
+	if client == nil {
+		client = http.DefaultClient
 	}
-	client := &http.Client{Timeout: timeout}
+
 	resp, err := client.Do(req)
 	if err != nil {
-		if timeoutErr := checkTimeoutError(err, timeout); timeoutErr != nil {
-			return nil, timeoutErr
-		}
 		return nil, fmt.Errorf("error sending request: %w", err)
 	}
 
