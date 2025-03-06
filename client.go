@@ -61,11 +61,10 @@ func (c *Client) CreateChatCompletionStream(
 		return nil, fmt.Errorf("request cannot be nil")
 	}
 
-	ctx, tcancel, err := getTimeoutContext(ctx, c.Timeout)
+	ctx, _, err := getTimeoutContext(ctx, c.Timeout)
 	if err != nil {
 		return nil, err
 	}
-	defer tcancel()
 
 	request.Stream = true
 	req, err := utils.NewRequestBuilder(c.AuthToken).
