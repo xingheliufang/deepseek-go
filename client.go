@@ -17,6 +17,12 @@ func (c *Client) CreateChatCompletion(
 		return nil, fmt.Errorf("request cannot be nil")
 	}
 
+	ctx, tcancel, err := getTimeoutContext(ctx, c.Timeout)
+	if err != nil {
+		return nil, err
+	}
+	defer tcancel()
+
 	req, err := utils.NewRequestBuilder(c.AuthToken).
 		SetBaseURL(c.BaseURL).
 		SetPath(c.Path).
@@ -51,6 +57,15 @@ func (c *Client) CreateChatCompletionStream(
 	ctx context.Context,
 	request *StreamChatCompletionRequest,
 ) (ChatCompletionStream, error) {
+	if request == nil {
+		return nil, fmt.Errorf("request cannot be nil")
+	}
+
+	ctx, tcancel, err := getTimeoutContext(ctx, c.Timeout)
+	if err != nil {
+		return nil, err
+	}
+	defer tcancel()
 
 	request.Stream = true
 	req, err := utils.NewRequestBuilder(c.AuthToken).
