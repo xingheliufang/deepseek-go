@@ -8,4 +8,6 @@ const (
 	ChatMessageRoleUser = "user"
 	// ChatMessageRoleAssistant is the role of an assistant message
 	ChatMessageRoleAssistant = "assistant"
+	// ChatMessageRoleTool is the role of a tool message
+	ChatMessageRoleTool = "tool"
 )

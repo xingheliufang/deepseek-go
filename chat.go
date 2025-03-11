@@ -13,6 +13,8 @@ const (
 	ChatMessageRoleUser = constants.ChatMessageRoleUser
 	// ChatMessageRoleAssistant is the role of an assistant message
 	ChatMessageRoleAssistant = constants.ChatMessageRoleAssistant
+	// ChatMessageRoleTool is the role of a tool message
+	ChatMessageRoleTool = constants.ChatMessageRoleTool
 )
 
 var (
