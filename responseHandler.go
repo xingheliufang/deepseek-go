@@ -51,15 +51,15 @@ type Message struct {
 
 // Logprobs represents log probability information for a choice or token.
 type Logprobs struct {
-	Content     []ContentToken    `json:"content"`      // A list of message content tokens with log probability information.
-	TopLogprobs []TopLogprobToken `json:"top_logprobs"` // List of the most likely tokens and their log probability.
+	Content []ContentToken `json:"content"` // A list of message content tokens with log probability information.
 }
 
 // ContentToken represents a single token within the content with its log probability and byte information.
 type ContentToken struct {
-	Token   string  `json:"token"`           // The token string.
-	Logprob float64 `json:"logprob"`         // The log probability of this token. -9999.0 if not in top 20.
-	Bytes   []int   `json:"bytes,omitempty"` // UTF-8 byte representation of the token. Can be nil.
+	Token       string            `json:"token"`           // The token string.
+	Logprob     float64           `json:"logprob"`         // The log probability of this token. -9999.0 if not in top 20.
+	Bytes       []int             `json:"bytes,omitempty"` // UTF-8 byte representation of the token. Can be nil.
+	TopLogprobs []TopLogprobToken `json:"top_logprobs"`    // List of the most likely tokens and their log probability.
 }
 
 // TopLogprobToken represents a single token within the top log probabilities with its log probability and byte information.
