@@ -62,7 +62,7 @@ func TestCreateChatCompletionStream_ErrorHandling(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = client.CreateChatCompletionStream(context.Background(), &deepseek.StreamChatCompletionRequest{})
+	_, err = client.CreateChatCompletionStream(context.Background(), &deepseek.ChatCompletionRequest{})
 	if err == nil {
 		t.Fatal("expected error, got nil")
 	}

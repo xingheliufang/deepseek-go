@@ -5,6 +5,7 @@ package deepseek_examples
 import (
 	"context"
 	"fmt"
+	"github.com/cohesion-org/deepseek-go/utils"
 	"log"
 	"os"
 
@@ -68,7 +69,7 @@ func ChatPrefixWithJsonMode() {
 			{Role: deepseek.ChatMessageRoleAssistant, Content: "```json\n", Prefix: true},
 		},
 		Stop:     []string{"```"}, // Stop the prefix when the assistant sends the closing triple backticks
-		JSONMode: true,
+		JSONMode: utils.BoolPtr(true),
 	})
 	if err != nil {
 		log.Fatalf("Failed to create chat completion: %v", err)

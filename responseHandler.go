@@ -71,11 +71,21 @@ type TopLogprobToken struct {
 
 // Usage represents token usage statistics.
 type Usage struct {
-	PromptTokens          int `json:"prompt_tokens"`            // Number of tokens used in the prompt.
-	CompletionTokens      int `json:"completion_tokens"`        // Number of tokens used in the completion.
-	TotalTokens           int `json:"total_tokens"`             // Total number of tokens used.
-	PromptCacheHitTokens  int `json:"prompt_cache_hit_tokens"`  // Number of tokens served from cache.
-	PromptCacheMissTokens int `json:"prompt_cache_miss_tokens"` // Number of tokens not served from cache.
+	PromptTokens            int                      `json:"prompt_tokens"`                       // Number of tokens used in the prompt.
+	CompletionTokens        int                      `json:"completion_tokens"`                   // Number of tokens used in the completion.
+	TotalTokens             int                      `json:"total_tokens"`                        // Total number of tokens used.
+	PromptCacheHitTokens    int                      `json:"prompt_cache_hit_tokens"`             // Number of tokens served from cache.
+	PromptCacheMissTokens   int                      `json:"prompt_cache_miss_tokens"`            // Number of tokens not served from cache.
+	PromptTokensDetails     PromptTokensDetails      `json:"prompt_tokens_details"`               // Details about prompt tokens.
+	CompletionTokensDetails *CompletionTokensDetails `json:"completion_tokens_details,omitempty"` // Details about completion tokens.
+}
+
+type PromptTokensDetails struct {
+	CachedTokens int `json:"cached_tokens"` // Number of tokens served from cache.
+}
+
+type CompletionTokensDetails struct {
+	ReasoningTokens int `json:"reasoning_tokens"` // Number of tokens used for reasoning.
 }
 
 // HandleChatCompletionResponse parses the response from the chat completion endpoint.

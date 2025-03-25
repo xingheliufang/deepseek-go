@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/cohesion-org/deepseek-go/utils"
 	"io"
 	"log"
 	"os"
@@ -14,12 +15,12 @@ import (
 // Streaming function demonstrates how to use the streaming feature of the DeepSeek API for chat completion.
 func Streaming() {
 	client := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"))
-	request := &deepseek.StreamChatCompletionRequest{
+	request := &deepseek.ChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
 			{Role: deepseek.ChatMessageRoleUser, Content: "Just testing if the streaming feature is working or not!"},
 		},
-		Stream: true,
+		Stream: utils.BoolPtr(true),
 	}
 	ctx := context.Background()
 
@@ -50,12 +51,12 @@ func Streaming() {
 // StreamingWithReasoningContent function demonstrates how to use the streaming feature of the DeepSeek API for chat completion with reasoning content (R1 Model).
 func StreamingWithReasoningContent() {
 	client := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"))
-	request := &deepseek.StreamChatCompletionRequest{
+	request := &deepseek.ChatCompletionRequest{
 		Model: deepseek.DeepSeekReasoner,
 		Messages: []deepseek.ChatCompletionMessage{
 			{Role: deepseek.ChatMessageRoleUser, Content: "Hello, how are you?"},
 		},
-		Stream: true,
+		Stream: utils.BoolPtr(true),
 	}
 	ctx := context.Background()
 

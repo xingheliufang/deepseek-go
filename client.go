@@ -23,6 +23,7 @@ func (c *Client) CreateChatCompletion(
 	}
 	defer tcancel()
 
+	request.Stream = utils.BoolPtr(false)
 	req, err := utils.NewRequestBuilder(c.AuthToken).
 		SetBaseURL(c.BaseURL).
 		SetPath(c.Path).
@@ -55,7 +56,7 @@ func (c *Client) CreateChatCompletion(
 // CreateChatCompletionStream sends a chat completion request with stream = true and returns the delta
 func (c *Client) CreateChatCompletionStream(
 	ctx context.Context,
-	request *StreamChatCompletionRequest,
+	request *ChatCompletionRequest,
 ) (ChatCompletionStream, error) {
 	if request == nil {
 		return nil, fmt.Errorf("request cannot be nil")
@@ -66,7 +67,7 @@ func (c *Client) CreateChatCompletionStream(
 		return nil, err
 	}
 
-	request.Stream = true
+	request.Stream = utils.BoolPtr(true)
 	req, err := utils.NewRequestBuilder(c.AuthToken).
 		SetBaseURL(c.BaseURL).
 		SetPath(c.Path).
@@ -102,14 +103,13 @@ func (c *Client) CreateFIMCompletion(
 	ctx context.Context,
 	request *FIMCompletionRequest,
 ) (*FIMCompletionResponse, error) {
+	if request == nil {
+		return nil, fmt.Errorf("request cannot be nil")
+	}
 	if request.MaxTokens > 4000 {
 		return nil, fmt.Errorf("max tokens must be <= 4000")
 	}
 	baseURL := "https://api.deepseek.com/beta/"
-
-	if request == nil {
-		return nil, fmt.Errorf("request cannot be nil")
-	}
 	req, err := utils.NewRequestBuilder(c.AuthToken).
 		SetBaseURL(baseURL).
 		SetPath("/completions").

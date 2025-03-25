@@ -1,6 +1,7 @@
 package deepseek_test
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/cohesion-org/deepseek-go"
@@ -98,13 +99,20 @@ func TestEstimateTokensFromMessages(t *testing.T) {
 						Function: deepseek.Function{
 							Name:        "get_weather",
 							Description: "Get weather information",
-							Parameters: &deepseek.FunctionParameters{
-								Type: "object",
-								Properties: map[string]interface{}{
-									"location": "string",
-								},
-								Required: []string{"location"},
-							},
+							Parameters: json.RawMessage(`
+								{
+									"type": "object",
+									"properties": {
+										"location": {
+											"type": "string",
+											"description": "The city and state, e.g. San Francisco, CA"
+										}
+									},
+									"required": [
+										"location"
+									]
+								}`,
+							),
 						},
 					},
 				},

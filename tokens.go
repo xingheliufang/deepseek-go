@@ -53,14 +53,7 @@ func EstimateTokensFromMessages(messages *ChatCompletionRequest) *TokenEstimate 
 
 		// Add tokens for function parameters if present
 		if tool.Function.Parameters != nil {
-			totalTokens += EstimateTokenCount(tool.Function.Parameters.Type).EstimatedTokens
-			for key, value := range tool.Function.Parameters.Properties {
-				totalTokens += EstimateTokenCount(key).EstimatedTokens
-				totalTokens += EstimateTokenCount(value.(string)).EstimatedTokens
-			}
-			for _, req := range tool.Function.Parameters.Required {
-				totalTokens += EstimateTokenCount(req).EstimatedTokens
-			}
+			totalTokens += EstimateTokenCount(string(tool.Function.Parameters)).EstimatedTokens
 		}
 	}
 

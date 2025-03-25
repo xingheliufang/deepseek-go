@@ -3,6 +3,7 @@ package deepseek_test
 import (
 	"context"
 	"errors"
+	"github.com/cohesion-org/deepseek-go/utils"
 	"io"
 	"testing"
 
@@ -21,7 +22,7 @@ func TestCreateChatCompletionStream(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), config.TestTimeout)
 	defer cancel()
 
-	stream, err := client.CreateChatCompletionStream(ctx, &deepseek.StreamChatCompletionRequest{
+	stream, err := client.CreateChatCompletionStream(ctx, &deepseek.ChatCompletionRequest{
 		Model: deepseek.DeepSeekChat,
 		Messages: []deepseek.ChatCompletionMessage{
 			{
@@ -109,10 +110,10 @@ func streamChatCompletion(
 	client *deepseek.Client,
 	messages []deepseek.ChatCompletionMessage,
 ) (string, error) {
-	req := &deepseek.StreamChatCompletionRequest{
+	req := &deepseek.ChatCompletionRequest{
 		Model:    deepseek.DeepSeekChat,
 		Messages: messages,
-		Stream:   true,
+		Stream:   utils.BoolPtr(true),
 	}
 
 	stream, err := client.CreateChatCompletionStream(ctx, req)

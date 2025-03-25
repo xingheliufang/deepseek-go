@@ -92,7 +92,7 @@ type FIMStreamCompletionResponse struct {
 	// Type of object returned (always "text_completion" for FIM completions).
 	Object string `json:"object"`
 	// Usage statistics for the completion request (if available). May be `nil`.
-	Usage *StreamUsage `json:"usage,omitempty"`
+	Usage *Usage `json:"usage,omitempty"`
 }
 
 // fimCompletionStream implements the ChatCompletionStream interface.
@@ -130,9 +130,6 @@ func (s *fimCompletionStream) FIMRecv() (*FIMStreamCompletionResponse, error) {
 			var response FIMStreamCompletionResponse
 			if err := json.Unmarshal([]byte(trimmed), &response); err != nil {
 				return nil, fmt.Errorf("unmarshal error: %w, raw data: %s", err, trimmed)
-			}
-			if response.Usage == nil {
-				response.Usage = &StreamUsage{}
 			}
 			return &response, nil
 		}

@@ -30,29 +30,18 @@ type chatCompletionStream struct {
 	reader *bufio.Reader      // Reader for the response body.
 }
 
-// StreamOptions provides options for streaming chat completion responses.
-type StreamOptions struct {
-	IncludeUsage bool `json:"include_usage"` // Whether to include usage information in the stream. The API returns the usage sometimes even if this is set to false.
-}
-
-// StreamUsage represents token usage statistics for a streaming chat completion response. You will get {0 0 0} up until the last stream delta.
-type StreamUsage struct {
-	PromptTokens     int `json:"prompt_tokens"`     // Number of tokens in the prompt.
-	CompletionTokens int `json:"completion_tokens"` // Number of tokens in the completion.
-	TotalTokens      int `json:"total_tokens"`      // Total number of tokens used.
-}
-
 // StreamDelta represents a delta in the chat completion stream.
 type StreamDelta struct {
-	Role             string `json:"role,omitempty"`              // Role of the message.
-	Content          string `json:"content"`                     // Content of the message.
-	ReasoningContent string `json:"reasoning_content,omitempty"` // Reasoning content of the message.
+	Role             string     `json:"role,omitempty"`              // Role of the message.
+	Content          string     `json:"content"`                     // Content of the message.
+	ReasoningContent string     `json:"reasoning_content,omitempty"` // Reasoning content of the message.
+	ToolCalls        []ToolCall `json:"tool_calls,omitempty"`        // Tool calls associated with the message.
 }
 
 // StreamChoices represents a choice in the chat completion stream.
 type StreamChoices struct {
-	Index        int         `json:"index"` // Index of the choice.
-	Delta        StreamDelta // Delta information for the choice.
+	Index        int         `json:"index"`                   // Index of the choice.
+	Delta        StreamDelta `json:"delta"`                   // Delta information for the choice.
 	FinishReason string      `json:"finish_reason,omitempty"` // Reason for finishing the generation.
 	Logprobs     Logprobs    `json:"logprobs,omitempty"`      // Log probabilities for the generated tokens.
 }
@@ -64,25 +53,7 @@ type StreamChatCompletionResponse struct {
 	Created int64           `json:"created"`         // Creation timestamp.
 	Model   string          `json:"model"`           // Model used.
 	Choices []StreamChoices `json:"choices"`         // Choices generated.
-	Usage   *StreamUsage    `json:"usage,omitempty"` // Usage statistics (optional).
-}
-
-// StreamChatCompletionRequest represents the request body for a streaming chat completion API call.
-type StreamChatCompletionRequest struct {
-	Stream           bool                    `json:"stream,omitempty"`            //Comments: Defaults to true, since it's "STREAM"
-	StreamOptions    StreamOptions           `json:"stream_options,omitempty"`    // Optional: Stream options for the request.
-	Model            string                  `json:"model"`                       // Required: Model ID, e.g., "deepseek-chat"
-	Messages         []ChatCompletionMessage `json:"messages"`                    // Required: List of messages
-	FrequencyPenalty float32                 `json:"frequency_penalty,omitempty"` // Optional: Frequency penalty, >= -2 and <= 2
-	MaxTokens        int                     `json:"max_tokens,omitempty"`        // Optional: Maximum tokens, > 1
-	PresencePenalty  float32                 `json:"presence_penalty,omitempty"`  // Optional: Presence penalty, >= -2 and <= 2
-	Temperature      float32                 `json:"temperature,omitempty"`       // Optional: Sampling temperature, <= 2
-	TopP             float32                 `json:"top_p,omitempty"`             // Optional: Nucleus sampling parameter, <= 1
-	ResponseFormat   *ResponseFormat         `json:"response_format,omitempty"`   // Optional: Custom response format: just don't try, it breaks rn ;)
-	Stop             []string                `json:"stop,omitempty"`              // Optional: Stop signals
-	Tools            []Tool                  `json:"tools,omitempty"`             // Optional: List of tools
-	LogProbs         bool                    `json:"logprobs,omitempty"`          // Optional: Enable log probabilities
-	TopLogProbs      int                     `json:"top_logprobs,omitempty"`      // Optional: Number of top tokens with log probabilities, <= 20
+	Usage   *Usage          `json:"usage,omitempty"` // Usage statistics (optional).
 }
 
 // Recv receives the next response from the stream.
@@ -106,9 +77,6 @@ func (s *chatCompletionStream) Recv() (*StreamChatCompletionResponse, error) {
 			var response StreamChatCompletionResponse
 			if err := json.Unmarshal([]byte(trimmed), &response); err != nil {
 				return nil, fmt.Errorf("unmarshal error: %w, raw data: %s", err, trimmed)
-			}
-			if response.Usage == nil {
-				response.Usage = &StreamUsage{}
 			}
 			return &response, nil
 		}

@@ -3,6 +3,7 @@ package deepseek_examples
 import (
 	"context"
 	"fmt"
+	"github.com/cohesion-org/deepseek-go/utils"
 	"log"
 	"os"
 
@@ -40,7 +41,7 @@ func JsonMode() {
 		Messages: []deepseek.ChatCompletionMessage{
 			{Role: deepseek.ChatMessageRoleUser, Content: prompt},
 		},
-		JSONMode: true,
+		JSONMode: utils.BoolPtr(true),
 	})
 	if err != nil {
 		log.Fatalf("Failed to create chat completion: %v", err)
@@ -99,7 +100,7 @@ Example: {"isbn": "978-0321765723", "title": "The Lord of the Rings", "author": 
 		Messages: []deepseek.ChatCompletionMessage{
 			{Role: deepseek.ChatMessageRoleUser, Content: prompt},
 		},
-		JSONMode: true,
+		JSONMode: utils.BoolPtr(true),
 	})
 	if err != nil {
 		log.Fatalf("Failed to create chat completion: %v", err)
