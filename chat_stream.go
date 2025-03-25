@@ -44,9 +44,10 @@ type StreamUsage struct {
 
 // StreamDelta represents a delta in the chat completion stream.
 type StreamDelta struct {
-	Role             string `json:"role,omitempty"`              // Role of the message.
-	Content          string `json:"content"`                     // Content of the message.
-	ReasoningContent string `json:"reasoning_content,omitempty"` // Reasoning content of the message.
+	Role             string     `json:"role,omitempty"`              // Role of the message.
+	Content          string     `json:"content"`                     // Content of the message.
+	ReasoningContent string     `json:"reasoning_content,omitempty"` // Reasoning content of the message.
+	ToolCalls        []ToolCall `json:"tool_calls,omitempty"`        // Optional tool calls related to the message.
 }
 
 // StreamChoices represents a choice in the chat completion stream.
