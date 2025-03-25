@@ -3,6 +3,7 @@ package deepseek_test
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"testing"
 
@@ -154,4 +155,217 @@ func streamChatCompletion(
 	assert.True(t, receivedRole, "should receive assistant role")
 	assert.NotEmpty(t, fullMessage, "should accumulate message content")
 	return fullMessage, nil
+}
+
+// TestStreamingWithToolCall tests the streaming of a tool call.
+func TestStreamingWithToolCall(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode.")
+	}
+	config := testutil.LoadTestConfig(t)
+	client := deepseek.NewClient(config.APIKey)
+	ctx, cancel := context.WithTimeout(context.Background(), config.TestTimeout)
+	defer cancel()
+
+	var message = []deepseek.ChatCompletionMessage{
+		{
+			Role:    constants.ChatMessageRoleUser,
+			Content: "Find restaurants near me. I'm currently in Italy",
+		},
+	}
+
+	req := &deepseek.StreamChatCompletionRequest{
+		Model:    deepseek.DeepSeekChat,
+		Messages: message,
+		Stream:   true,
+		Tools: []deepseek.Tool{
+			{
+				Type: "function",
+				Function: deepseek.Function{
+					Name:        "get_user_location",
+					Description: "Get the user's exact location coordinates",
+					Parameters: &deepseek.FunctionParameters{
+						Type: "object",
+						Properties: map[string]interface{}{
+							"country": map[string]interface{}{
+								"type":        "string",
+								"description": "Country name",
+							},
+							"city": map[string]interface{}{
+								"type":        "string",
+								"description": "City name",
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	stream, err := client.CreateChatCompletionStream(ctx, req)
+	require.NoError(t, err)
+	defer stream.Close()
+
+	var fullMessage string
+	var toolCallCount int
+
+	// Initialize the slice with enough capacity
+	fullToolCall := make([]struct {
+		id        string
+		name      string
+		arguments string
+	}, 2) // Expecting 2 tool calls
+
+	// Track the current tool call index
+	currentToolCallIndex := -1
+
+	for {
+		resp, err := stream.Recv()
+		if errors.Is(err, io.EOF) {
+			break
+		}
+		require.NoError(t, err, "stream should not error")
+
+		if len(resp.Choices) > 0 {
+			chunk := resp.Choices[0]
+
+			// Track regular content
+			if chunk.Delta.Content != "" {
+				fullMessage += chunk.Delta.Content
+			}
+
+			if len(chunk.Delta.ToolCalls) > 0 {
+				toolCall := chunk.Delta.ToolCalls[0]
+
+				// If we have a new ID, start tracking a new tool call
+				if toolCall.ID != "" && (currentToolCallIndex == -1 ||
+					fullToolCall[currentToolCallIndex].id != toolCall.ID) {
+					currentToolCallIndex++
+					fullToolCall[currentToolCallIndex].id = toolCall.ID
+					toolCallCount++
+				}
+
+				// Update function name if provided
+				if toolCall.Function.Name != "" {
+					fullToolCall[currentToolCallIndex].name = toolCall.Function.Name
+				}
+
+				// Append to arguments if provided
+				if toolCall.Function.Arguments != "" {
+					fullToolCall[currentToolCallIndex].arguments += toolCall.Function.Arguments
+				}
+			}
+		}
+	}
+
+	t.Logf("Assistant's response: %s", fullMessage)
+
+	// Generate toolCalls for assertions
+	toolCalls := make([]string, len(fullToolCall))
+	for i, tc := range fullToolCall {
+		toolCalls[i] = tc.name + ": " + tc.arguments
+	}
+
+	assert.NotEmpty(t, fullMessage, "should accumulate message content")
+	assert.Equal(t, 2, toolCallCount, "should make exactly two tool calls")
+	assert.Contains(t, toolCalls[0], "get_user_location", "first tool call should get location")
+	assert.Contains(t, toolCalls[1], "search_restaurants", "second tool call should search restaurants")
+}
+
+func TestStreamingWithToolCalls(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode.")
+	}
+	config := testutil.LoadTestConfig(t)
+	client := deepseek.NewClient(config.APIKey)
+	ctx, cancel := context.WithTimeout(context.Background(), config.TestTimeout)
+	defer cancel()
+
+	var message = []deepseek.ChatCompletionMessage{
+		{
+			Role:    constants.ChatMessageRoleUser,
+			Content: "Find restaurants near me. I'm currently in France, Paris.",
+		},
+	}
+
+	req := &deepseek.StreamChatCompletionRequest{
+		Model:    deepseek.DeepSeekChat,
+		Messages: message,
+		Stream:   true,
+		Tools: []deepseek.Tool{
+			{
+				Type: "function",
+				Function: deepseek.Function{
+					Name:        "get_user_location",
+					Description: "Get the user's exact location coordinates",
+					Parameters: &deepseek.FunctionParameters{
+						Type: "object",
+						Properties: map[string]interface{}{
+							"country": map[string]interface{}{
+								"type":        "string",
+								"description": "Country name",
+							},
+							"city": map[string]interface{}{
+								"type":        "string",
+								"description": "City name",
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	stream, err := client.CreateChatCompletionStream(ctx, req)
+	require.NoError(t, err)
+	defer stream.Close()
+
+	var fullMessage string
+	var toolCallCount int
+	var fullToolCall struct {
+		id        string
+		name      string
+		arguments string
+	}
+
+	for {
+		resp, err := stream.Recv()
+		if errors.Is(err, io.EOF) {
+			break
+		}
+		require.NoError(t, err, "stream should not error")
+
+		if len(resp.Choices) > 0 {
+			chunk := resp.Choices[0]
+
+			// Track regular content
+			if chunk.Delta.Content != "" {
+				fullMessage += chunk.Delta.Content
+			}
+
+			if len(chunk.Delta.ToolCalls) > 0 {
+				toolCall := chunk.Delta.ToolCalls[0]
+
+				// If we have a new ID, start tracking a new tool call
+				if toolCall.ID != "" {
+					toolCallCount++
+				}
+
+				// Update function name if provided
+				if toolCall.Function.Name != "" {
+					fullToolCall.name = toolCall.Function.Name
+				}
+
+				// Append to arguments if provided
+				if toolCall.Function.Arguments != "" {
+					fullToolCall.arguments += toolCall.Function.Arguments
+				}
+			}
+		}
+	}
+
+	assert.Equal(t, 1, toolCallCount, "should make exactly one tool call")
+	assert.Contains(t, fullToolCall.name, "get_user_location", "should call get_user_location")
+
+	fmt.Printf("Arguments: %s", fullToolCall.arguments)
 }
