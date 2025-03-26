@@ -32,9 +32,9 @@ type chatCompletionStream struct {
 
 // StreamDelta represents a delta in the chat completion stream.
 type StreamDelta struct {
-	Role             string     `json:"role,omitempty"`              // Role of the message.
-	Content          string     `json:"content"`                     // Content of the message.
-	ReasoningContent string     `json:"reasoning_content,omitempty"` // Reasoning content of the message.
+	Role             *string    `json:"role,omitempty"`              // Role of the message.
+	Content          *string    `json:"content"`                     // Content of the message.
+	ReasoningContent *string    `json:"reasoning_content,omitempty"` // Reasoning content of the message.
 	ToolCalls        []ToolCall `json:"tool_calls,omitempty"`        // Optional tool calls related to the message.
 }
 
@@ -42,8 +42,8 @@ type StreamDelta struct {
 type StreamChoices struct {
 	Index        int         `json:"index"`                   // Index of the choice.
 	Delta        StreamDelta `json:"delta"`                   // Delta information for the choice.
-	FinishReason string      `json:"finish_reason,omitempty"` // Reason for finishing the generation.
-	Logprobs     Logprobs    `json:"logprobs,omitempty"`      // Log probabilities for the generated tokens.
+	FinishReason *string     `json:"finish_reason,omitempty"` // Reason for finishing the generation.
+	Logprobs     *Logprobs   `json:"logprobs,omitempty"`      // Log probabilities for the generated tokens.
 }
 
 // StreamChatCompletionResponse represents a single response from a streaming chat completion API call.
